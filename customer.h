@@ -38,7 +38,6 @@ public:
 };
 /*------------------------------------Friend------------------------------------*/
 bool getCustomerFromFile(fstream &file, Customer &customer);
-void updateCustomerToFile(Customer customer);
 bool checkCustomer(Customer &customer);
 bool operator>>(istream &in, Customer &customer);
 /*------------------------------------Other------------------------------------*/
@@ -46,5 +45,6 @@ void updateCustomerToFile(Customer customer);
 bool dataOfEmptyIdCustomer(fstream &file, int &count);
 int numberFromEmptyIdCustomer();
 int getNumberOfCustomer();
+void updateNumberOfCustomer(int count);
 
 #endif

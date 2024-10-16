@@ -68,6 +68,7 @@ bool operator>>(istream &in, Customer &customer)
         {
             id = getNumberOfCustomer();
             id++;
+            updateNumberOfCustomer(id);
         }
         stringstream ss;
         ss << setw(3) << setfill('0') << id;
@@ -172,4 +173,16 @@ int getNumberOfCustomer()
         file >> count;
     file.close();
     return count;
+}
+
+void updateNumberOfCustomer(int count)
+{
+    fstream file("./customer/customerID.txt", ios::out);
+    if (!file.is_open())
+    {
+        cout << "Không thể mở file" << endl;
+        return;
+    }
+    file << count;
+    file.close();
 }

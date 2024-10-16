@@ -4,6 +4,7 @@
 #include "staff.h"
 #include "dish.h"
 #include "customer.h"
+#include "computer.h"
 #include <iomanip>
 
 class Admin :  public Staff{
@@ -24,6 +25,12 @@ public:
     void addCustomer(Customer customer);
     void deleteCustomer(Customer customer);
     void seenListCustomer();
+
+    void addComputer(Computer computer);
+    void seenComputer(Computer computer);
+    void changeCost(Computer computer);
+    void deleteComputer(Computer computer);
+    void seenListComputer();
 };
 /*------------------------------------Other------------------------------------*/
 

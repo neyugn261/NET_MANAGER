@@ -321,4 +321,19 @@ void Admin::seenListCustomer(){
     file.close();
 }
 
+void Admin::addComputer(Computer computer)
+{
+    fstream file("./computer/listComputer.txt", ios::app);
+    if (file.is_open())
+    { // id|name|cost|status|type|totaltime
+        file << computer.getId() << "|" << computer.getCost() << "|" << computer.getStatus() << "|" << computer.getType() << "|" << computer.getTotaltime() << endl;
+        file.close();
+    }
+    else
+    {
+        cout << "Không thể mở file" << endl;
+    }
+    cout << "Thêm máy thành công với ID là: " << computer.getId() << endl;
+}
+
 /*------------------------------------Other------------------------------------*/

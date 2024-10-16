@@ -10,6 +10,7 @@
 #include <string>
 #include "admin.h"
 
+
 using namespace std;
 
 #define KEY_UP 72
@@ -34,9 +35,11 @@ void showMenu(string typeMenu, int selectOption);
 void menuAdmin(Admin admin);
 
 void manageComputer(Admin admin);
-/**/ void addComputer(Admin admin);      // cl
-/**/ void deleteComputer(Admin admin);   // cl
-/**/ void changeCost(Admin admin);       // cl
+/**/ void addComputer(Admin admin);      
+/**/ void seenComputer(Admin admin);     // cl
+/**//**/ void in4Computer(Admin admin, Computer computer); // cl
+/**//**/ void deleteComputer(Admin admin,Computer computer);   // cl
+/**//**/ void changeCost(Admin admin, Computer computer);       // cl
 /**/ void seenListComputer(Admin admin); // cl
 
 void manageCustomer(Admin admin);

@@ -86,15 +86,12 @@ void optionMenu(string typeMenu, int option)
             cout << "Thêm máy" << endl;
             break;
         case 2:
-            cout << "Xóa máy" << endl;
+            cout << "Xem và thay đổi thông tin máy" << endl;
             break;
         case 3:
-            cout << "Thay đổi giá của máy" << endl;
-            break;
-        case 4:
             cout << "Xem danh sách máy" << endl;
             break;
-        case 5:
+        case 4:
             cout << "Thoát" << endl;
             break;
         }
@@ -193,6 +190,24 @@ void optionMenu(string typeMenu, int option)
             break;
         }
     }
+    else if (typeMenu == "SEENCOMPUTER")
+    {
+        switch (option)
+        {
+        case 1:
+            cout << "Xem thông tin máy" << endl;
+            break;
+        case 2:
+            cout << "Thay đổi giá" << endl;
+            break;
+        case 3:
+            cout << "Xóa máy" << endl;
+            break;
+        case 4:
+            cout << "Thoát" << endl;
+            break;
+        }
+    }
     else
     {
         cout << "Không tìm thấy menu" << endl;
@@ -214,7 +229,7 @@ int getMenuOptionCount(const string &typeMenu)
     if (typeMenu == "ADMIN")
         return 6;
     if (typeMenu == "MANAGECOMPUTER")
-        return 5;
+        return 4;
     if (typeMenu == "MANAGESTAFF")
         return 4;
     if (typeMenu == "MANAGECUSTOMER")
@@ -226,6 +241,8 @@ int getMenuOptionCount(const string &typeMenu)
     if (typeMenu == "STAFF")
         return 5;
     if (typeMenu == "SEENSTAFF")
+        return 4;
+    if (typeMenu == "SEENCOMPUTER")
         return 4;
     // Các loại menu khác...
 
@@ -310,24 +327,109 @@ void manageComputer(Admin admin)
         switch (key)
         {
         case KEY_UP:
-            selectOption = (selectOption == 1) ? 5 : selectOption - 1;
+            selectOption = (selectOption == 1) ? 4 : selectOption - 1;
             break;
         case KEY_DOWN:
-            selectOption = (selectOption == 5) ? 1 : selectOption + 1;
+            selectOption = (selectOption == 4) ? 1 : selectOption + 1;
             break;
         case KEY_ENTER:
             switch (selectOption)
             {
             case 1:
-
+                addComputer(admin);
                 break;
-            case 5:
+            case 2:
+                  seenComputer(admin);
+                break;
+            case 3:
+                //   seenListComputer(admin);
+                break;
+            case 4:
                 system("cls");
                 return;
             }
             break;
         }
     }
+}
+
+void addComputer(Admin admin)
+{
+    system("cls");
+    ShowCursor(true);
+    Computer computer;
+    if (cin >> computer)
+    {
+        admin.addComputer(computer);
+    }
+    ShowCursor(false);
+    pressEnter();
+}
+
+void seenComputer(Admin admin)
+{
+    system("cls");
+    ShowCursor(true);
+    Computer computer;
+    int count = 0;
+    cout << "(Nhập sai quá 3 lần tự động thoát)" << endl;
+    while (count++ < 3)
+    {        
+        cout << "Nhập ID máy: ";
+        string temp;
+        cin >> temp;        
+       
+        stringstream ss;
+        ss << setw(3) << setfill('0') << temp;
+        string id = "PC" + ss.str();        
+
+        computer.setId(id);
+        if (checkComputer(computer))
+        {
+            ShowCursor(false);
+            system("cls");
+            SetConsoleTitle(TEXT("Menu quản lí thông tin máy"));
+            int selectOption = 1;
+
+            while (true)
+            {
+                showMenu("SEENCOMPUTER", selectOption);
+                int key = _getch();
+                switch (key)
+                {
+                case KEY_UP:
+                    selectOption = (selectOption == 1) ? 4 : selectOption - 1;
+                    break;
+                case KEY_DOWN:
+                    selectOption = (selectOption == 4) ? 1 : selectOption + 1;
+                    break;
+                case KEY_ENTER:
+                    switch (selectOption)
+                    {
+                    case 1:
+                     //   in4Computer(admin, computer);
+                        break;
+                    case 2:
+                     //   changeCost(admin, computer);
+                        break;
+                    case 3:
+                     //   deleteComputer(admin, computer);
+                        break;
+                    case 4:
+                        system("cls");
+                        return;
+                    }
+                }
+            }
+            ShowCursor(true);
+            return;
+        }
+        system("cls");
+        cout << "(Nhập sai quá 3 lần tự động thoát: " << count << " lần)" << endl;
+        cout << "Không tìm thấy ID máy!" << endl;
+    }
+    ShowCursor(false);
+    system("cls");
 }
 
 void manageCustomer(Admin admin)
@@ -374,7 +476,8 @@ void addCustomer(Admin admin)
     system("cls");
     ShowCursor(true);
     Customer customer;
-    if(cin>>customer){
+    if (cin >> customer)
+    {
         admin.addCustomer(customer);
     }
     ShowCursor(false);
@@ -382,7 +485,7 @@ void addCustomer(Admin admin)
 }
 
 void deleteCustomer(Admin admin)
-{   
+{
     system("cls");
     ShowCursor(true);
     Customer customer;
@@ -395,7 +498,8 @@ void deleteCustomer(Admin admin)
         cin >> name;
         customer.setName(name);
         if (checkCustomer(customer))
-        {   
+        {
+            system("cls");
             ShowCursor(false);
             admin.deleteCustomer(customer);
             pressEnter();
