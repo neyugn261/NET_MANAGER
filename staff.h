@@ -10,7 +10,7 @@ private:
     string sdt;
     string name;
 
-public:
+public:    
     ~Staff();
     string getId();
     string getSdt();
@@ -19,6 +19,19 @@ public:
     void setId(string);
     void setSdt(string);
     void setName(string);
+
+    friend bool getStaffFromFile(fstream &file, Staff &staff);
+    friend void updateStaffToFile(Staff staff);
 };
+/*------------------------------------Friend------------------------------------*/
+bool getStaffFromFile(fstream &file, Staff &staff);
+void updateStaffToFile(Staff staff);
+/*------------------------------------Other------------------------------------*/
+bool dataOfEmptyId(fstream &file, int &count);
+int numberFromEmptyIdSt();
+int getNumberOfStaff();
+void updateNumberOfStaff(int count);
+bool checkStaff(Staff &staff);
+
 
 #endif

@@ -7,23 +7,33 @@ int main()
     Account account;
     if (account.login())
     {
-        if (account.getRole() == "ADMIN")
+        if (account.getStatus() == "ONLINE")
         {
-            Admin admin;
-            admin.setPass(account.getPass());
-            admin.setStatus(account.getStatus());
-            admin.setName(account.getName());
-            admin.setRole(account.getRole());
-            menuAdmin(admin);
+            cout << "Tài khoản đã đăng nhập ở một nơi khác" << endl;
+            return 0;
         }
         else
         {
-            Staff staff;
-            staff.setPass(account.getPass());
-            staff.setStatus(account.getStatus());
-            staff.setName(account.getName());
-            staff.setRole(account.getRole());
-            menuStaff(staff);
+            account.setStatus("ONLINE");
+
+            if (account.getRole() == "ADMIN")
+            {
+                Admin admin;
+                admin.setPass(account.getPass());
+                admin.setStatus(account.getStatus());
+                admin.setName(account.getAname());
+                admin.setRole(account.getRole());
+                menuAdmin(admin);
+            }
+            else
+            {
+                Staff staff;
+                staff.setPass(account.getPass());
+                staff.setStatus(account.getStatus());
+                staff.setName(account.getAname());
+                staff.setRole(account.getRole());
+                menuStaff(staff);
+            }
         }
     }
 

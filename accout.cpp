@@ -1,7 +1,4 @@
 #include "account.h"
-#include <fstream>
-#include <sstream>
-#include <conio.h>
 
 #define KEY_UP 72
 #define KEY_DOWN 80
@@ -9,11 +6,12 @@
 #define KEY_BACKSPACE 8
 
 Account::~Account() {}
-string Account::getName() { return name; }
+string Account::getAname() { return aname; }
 string Account::getPass() { return password; }
 string Account::getStatus() { return status; }
 string Account::getRole() { return role; }
-void Account::setName(string name) { this->name = name; }
+
+void Account::setAname(string aname) { this->aname = aname; }
 void Account::setPass(string pass) { this->password = pass; }
 void Account::setStatus(string status) { this->status = status; }
 void Account::setRole(string role) { this->role = role; }
@@ -32,7 +30,10 @@ bool Account::login()
         }
         else
         {
-            cout << "\nĐăng nhập thất bại" << endl;
+            if (role == "ONLINE")
+                cout << "Tài khoản đã đăng nhập ở một nơi khác" << endl;
+            else
+                cout << "Đăng nhập thất bại" << endl;
         }
     }
     system("cls");
@@ -45,7 +46,7 @@ bool Account::login()
     return false;
 }
 
-/*------------------------------------Other------------------------------------*/
+/*------------------------------------Friend------------------------------------*/
 
 bool checkAccount(Account &account)
 {
@@ -60,20 +61,11 @@ bool checkAccount(Account &account)
     Account temp;
     while (getAccountFromFile(file, temp))
     {
-        if (temp.name == account.name && temp.password == account.password)
+        if (temp.aname == account.aname && temp.password == account.password)
         {
-            if (temp.getStatus() == "ONLINE")
-            {
-                cout << "Tài khoản đang được sử dụng!" << endl;
-                return false;
-            }
-            else
-            {
-                account.role = temp.role;
-                account.setStatus("ONLINE");
-                file.close();
-                return true;
-            }
+            account.role = temp.role;
+            file.close();
+            return true;
         }
     }
 
@@ -88,7 +80,7 @@ bool getAccountFromFile(fstream &file, Account &account)
         return false;
 
     stringstream ss(line);
-    getline(ss, account.name, '|');
+    getline(ss, account.aname, '|');
     getline(ss, account.password, '|');
     getline(ss, account.role, '|');
     getline(ss, account.status);
@@ -99,7 +91,7 @@ bool getAccountFromFile(fstream &file, Account &account)
 istream &operator>>(istream &in, Account &account)
 {
     cout << "Username: ";
-    in >> account.name;
+    in >> account.aname;
     cout << "Password: ";
     enterpassword(account.password);
     return in;

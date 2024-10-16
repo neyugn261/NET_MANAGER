@@ -8,8 +8,8 @@
 #include <conio.h>
 #include <iomanip>
 #include <string>
-#include <functional>
 #include "admin.h"
+#include "dish.h"
 
 using namespace std;
 
@@ -31,36 +31,42 @@ void printMenuOption(string typeMenu, int option, bool isSelected);
 int getMenuOptionCount(const string &typeMenu);
 void showMenu(string typeMenu, int selectOption);
 
-/*------------------------------------MENUs------------------------------------*/
-void menuAdmin(Admin admin); // cl
-void menuStaff(Staff staff); // cl
 /*------------------------------------MenusAdmin------------------------------------*/
-void manageDish(Admin admin);                       // cl
-/**/ void addDish(Admin admin);                     // cl
-/**/ void deleteDish(Admin admin);                  // cl
-/**/ void changeDish(Admin admin);                  // cl
-/**/ /**/ void changeCost(Admin admin, Dish dish);  // cl
-/**/ /**/ void addQuanlity(Admin admin, Dish dish); // cl
-/**/ void seenListDish(Admin admin);                // cl
+void menuAdmin(Admin admin);
 
-void manageComputer(Admin admin);        // cl
+void manageComputer(Admin admin);
 /**/ void addComputer(Admin admin);      // cl
 /**/ void deleteComputer(Admin admin);   // cl
 /**/ void changeCost(Admin admin);       // cl
 /**/ void seenListComputer(Admin admin); // cl
 
-void manageCustomer(Admin admin);        // cl
+void manageCustomer(Admin admin);
 /**/ void addCustomer(Admin admin);      // cl
 /**/ void deleteCustomer(Admin admin);   // cl
 /**/ void seenListCustomer(Admin admin); // cl
 
 void manageStaff(Admin admin);
-/**/ void addStaff(Admin admin);       // cl
-/**/ void deleteStaff(Admin admin);    // cl
-/**/ void changePassword(Admin admin); // cl
-/**/ void seenListStaff(Admin admin);  // cl
-void historyA(Admin admin);            // cl
+/**/ void addStaff(Admin admin);
+/**/ void seenstaff(Admin admin);
+/**/ /**/ void in4Staff(Admin admin, Staff staff); // còn xấu
+/**/ /**/ void deleteStaff(Admin admin, Staff staff);
+/**/ /**/ void changeSPassword(Admin admin, Staff staff);
+/**/ void seenListStaff(Admin admin); // còn xấu
+
+void manageDish(Admin admin);
+/**/ void addDish(Admin admin); 
+/**/ void changeDish(Admin admin);
+/**/ /**/ void in4Dish(Admin admin, Dish dish); // còn xấu
+/**/ /**/ void changeCost(Admin admin, Dish dish);  
+/**/ /**/ void addQuanlity(Admin admin, Dish dish); 
+/**/ /**/ void deleteDish(Admin admin,Dish dish);
+/**/ void seenListDish(Admin admin);                
+
+void historyA(Admin admin); // cl
+
 /*------------------------------------Menustaff------------------------------------*/
+void menuStaff(Staff staff);
+
 void openComputer(Staff staff);  // cl
 void statusComuter(Staff staff); // cl
 void historyS(Staff staff);      // cl

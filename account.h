@@ -2,12 +2,17 @@
 #define ACCOUNT_H 1
 
 #include <iostream>
+#include <fstream>
+#include <sstream>
+#include <conio.h>
+
+
 using namespace std;
 
 class Account
 {
 protected:
-    string name;
+    string aname;
     string password;
     string status;
     string role;
@@ -15,12 +20,12 @@ protected:
 public:
     ~Account();
 
-    string getName();
+    string getAname();
     string getPass();
     string getStatus();
     string getRole();
 
-    void setName(string);
+    void setAname(string);
     void setPass(string);
     void setStatus(string);
     void setRole(string);
@@ -38,5 +43,6 @@ bool getAccountFromFile(fstream &file, Account &account);
 istream &operator>>(istream &in, Account &account);
 /*------------------------------------Other------------------------------------*/
 void enterpassword(string &password);
+
 
 #endif
