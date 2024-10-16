@@ -3,6 +3,7 @@
 
 #include "staff.h"
 #include "dish.h"
+#include "customer.h"
 #include <iomanip>
 
 class Admin :  public Staff{
@@ -19,6 +20,10 @@ public:
     void addQuanlity(Dish dish);
     void deleteDish(Dish dish);
     void seenListDish();
+
+    void addCustomer(Customer customer);
+    void deleteCustomer(Customer customer);
+    void seenListCustomer();
 };
 /*------------------------------------Other------------------------------------*/
 

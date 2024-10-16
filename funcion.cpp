@@ -352,7 +352,13 @@ void manageCustomer(Admin admin)
             switch (selectOption)
             {
             case 1:
-
+                addCustomer(admin);
+                break;
+            case 2:
+                deleteCustomer(admin);
+                break;
+            case 3:
+                seenListCustomer(admin);
                 break;
             case 4:
                 system("cls");
@@ -361,6 +367,54 @@ void manageCustomer(Admin admin)
             break;
         }
     }
+}
+
+void addCustomer(Admin admin)
+{
+    system("cls");
+    ShowCursor(true);
+    Customer customer;
+    if(cin>>customer){
+        admin.addCustomer(customer);
+    }
+    ShowCursor(false);
+    pressEnter();
+}
+
+void deleteCustomer(Admin admin)
+{   
+    system("cls");
+    ShowCursor(true);
+    Customer customer;
+    int count = 0;
+    cout << "(Nhập sai quá 3 lần tự động thoát)" << endl;
+    while (count++ < 3)
+    {
+        cout << "Nhập tên khách hàng: ";
+        string name;
+        cin >> name;
+        customer.setName(name);
+        if (checkCustomer(customer))
+        {   
+            ShowCursor(false);
+            admin.deleteCustomer(customer);
+            pressEnter();
+            return;
+        }
+
+        system("cls");
+        cout << "(Nhập sai quá 3 lần tự động thoát: " << count << " lần)" << endl;
+        cout << "Không tìm thấy tên khách hàng!" << endl;
+    }
+    system("cls");
+    ShowCursor(false);
+}
+
+void seenListCustomer(Admin admin)
+{
+    system("cls");
+    admin.seenListCustomer();
+    pressEnter();
 }
 
 void manageStaff(Admin admin)

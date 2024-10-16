@@ -249,4 +249,76 @@ void Admin::seenListDish()
     file.close();
 }
 
+void Admin::addCustomer(Customer customer)
+{
+    fstream file("./customer/listCustomer.txt", ios::app);
+    if (file.is_open())
+    { // id|name|sdt|email|contribute
+        file << customer.getId() << "|" << customer.getName() << "|" << customer.getSdt() << "|" << customer.getEmail() << "|" << customer.getContribute() << endl;
+        file.close();
+    }
+    else
+    {
+        cout << "Không thể mở file" << endl;
+    }
+    cout << "Thêm khách hàng thành công với ID là: " << customer.getId() << endl;
+}
+
+void Admin::deleteCustomer(Customer customer)
+{
+    fstream file("./customer/listCustomer.txt", ios::in);
+    fstream temp("./customer/temp.txt", ios::out);
+    if (!file.is_open())
+    {
+        cout << "Không thể mở file" << endl;
+        return;
+    }
+    if (!temp.is_open())
+    {
+        cout << "Không thể mở file" << endl;
+        return;
+    }
+
+    Customer tempCustomer;
+    while (getCustomerFromFile(file, tempCustomer))
+    {
+        if (tempCustomer.getName() != customer.getName())
+        {
+            temp << tempCustomer.getId() << "|" << tempCustomer.getName() << "|" << tempCustomer.getSdt() << "|" << tempCustomer.getEmail() << "|" << tempCustomer.getContribute() << endl;
+        }
+        else{
+            string temp = tempCustomer.getId();
+            string numberPart = temp.substr(1);
+            size_t pos = numberPart.find_first_not_of('0');
+            temp = (pos != string::npos) ? numberPart.substr(pos) : "0";
+            fstream file2("./customer/emptyID.txt", ios::app);
+            if (!file2.is_open())
+            {
+                cout << "Không thể mở file" << endl;
+                return;
+            }
+            file2 << temp << endl;
+            file2.close();
+        }
+    }
+
+    file.close();
+    temp.close();
+    system("del .\\customer\\listCustomer.txt");
+    system("ren .\\customer\\temp.txt listCustomer.txt");
+
+    cout << "Xóa khách hàng thành công" << endl;
+}
+
+void Admin::seenListCustomer(){
+    cout << "Danh sách khách hàng: " << endl;
+    Customer customer;
+    fstream file("./customer/listCustomer.txt", ios::in);
+    while (getCustomerFromFile(file, customer))
+    {
+        cout << customer.getId() << "|" << customer.getName() << "|" << customer.getSdt() << "|" << customer.getEmail() << "|" << customer.getContribute() << endl;
+    }
+    file.close();
+}
+
 /*------------------------------------Other------------------------------------*/

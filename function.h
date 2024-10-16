@@ -9,7 +9,6 @@
 #include <iomanip>
 #include <string>
 #include "admin.h"
-#include "dish.h"
 
 using namespace std;
 
@@ -41,9 +40,9 @@ void manageComputer(Admin admin);
 /**/ void seenListComputer(Admin admin); // cl
 
 void manageCustomer(Admin admin);
-/**/ void addCustomer(Admin admin);      // cl
-/**/ void deleteCustomer(Admin admin);   // cl
-/**/ void seenListCustomer(Admin admin); // cl
+/**/ void addCustomer(Admin admin);      
+/**/ void deleteCustomer(Admin admin);   
+/**/ void seenListCustomer(Admin admin); // còn xấu
 
 void manageStaff(Admin admin);
 /**/ void addStaff(Admin admin);
