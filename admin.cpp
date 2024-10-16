@@ -163,7 +163,7 @@ void Admin::addDish(Dish dish)
 
 void Admin::seenDish(Dish dish)
 {
-    cout << "ID: " << dish.getId() << endl;
+    cout << "ID x: " << dish.getId() << endl;
     cout << "Tên món ăn: " << dish.getName() << endl;
     cout << "Giá: " << dish.getPrice() << endl;
     cout << "Đơn vị: " << dish.getUnit() << endl;
@@ -335,5 +335,83 @@ void Admin::addComputer(Computer computer)
     }
     cout << "Thêm máy thành công với ID là: " << computer.getId() << endl;
 }
+
+void Admin::seenComputer(Computer computer)
+{
+    cout << "ID: " << computer.getId() << endl;
+    cout << "Giá: " << computer.getCost() << endl;
+    cout << "Trạng thái: " << computer.getStatus() << endl;
+    cout << "Loại: " << computer.getType() << endl;
+    cout << "Thời gian sử dụng: " << computer.getTotaltime() << endl;
+}
+
+void Admin::changeCost(Computer computer)
+{
+    string cost;
+    cout << "Nhập giá mới: ";
+    cin >> cost;
+    computer.setCost(cost);
+    updateComputerToFile(computer);
+    cout << "Đổi giá thành công" << endl;
+}
+
+void Admin::deleteComputer(Computer computer)
+{
+    fstream file("./computer/listComputer.txt", ios::in);
+    fstream temp("./computer/temp.txt", ios::out);
+    if (!file.is_open())
+    {
+        cout << "Không thể mở file" << endl;
+        return;
+    }
+    if (!temp.is_open())
+    {
+        cout << "Không thể mở file" << endl;
+        return;
+    }
+
+    Computer tempComputer;
+    while (getComputerFromFile(file, tempComputer))
+    {
+        if (tempComputer.getId() != computer.getId())
+        {
+            temp << tempComputer.getId() << "|" << tempComputer.getCost() << "|" << tempComputer.getStatus() << "|" << tempComputer.getType() << "|" << tempComputer.getTotaltime() << endl;
+        }
+        else{
+            string temp = tempComputer.getId();
+            string numberPart = temp.substr(2);
+            size_t pos = numberPart.find_first_not_of('0');
+            temp = (pos != string::npos) ? numberPart.substr(pos) : "0";
+            fstream file2("./computer/emptyID.txt", ios::app);
+            if (!file2.is_open())
+            {
+                cout << "Không thể mở file" << endl;
+                return;
+            }
+            file2 << temp << endl;
+            file2.close();
+        }
+    }
+
+    file.close();
+    temp.close();
+    system("del .\\computer\\listComputer.txt");
+    system("ren .\\computer\\temp.txt listComputer.txt");
+
+    cout << "Xóa máy thành công" << endl;
+}
+
+void Admin::seenListComputer()
+{
+    cout << "Danh sách máy: " << endl;
+    Computer computer;
+    fstream file("./computer/listComputer.txt", ios::in);
+    while (getComputerFromFile(file, computer))
+    {
+        cout << computer.getId() << "|" << computer.getCost() << "|" << computer.getStatus() << "|" << computer.getType() << "|" << computer.getTotaltime() << endl;
+    }
+    file.close();
+}
+
 
 /*------------------------------------Other------------------------------------*/

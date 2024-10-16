@@ -29,13 +29,13 @@ bool operator>>(istream &in, Computer &computer)
     computer.id = "PC" + ss.str();
     computer.status = "OFFLINE";
     computer.totaltime = "0";
-    
+
     cout << "Nhập giá: ";
-    in >> computer.cost;   
+    in >> computer.cost;
 
     cout << "Nhập loại: ";
     in >> computer.type;
-   
+
     return true;
 }
 
@@ -53,18 +53,16 @@ bool getComputerFromFile(fstream &file, Computer &computer)
     return true;
 }
 
-
 bool checkComputer(Computer &computer)
 {
     string filename = "./computer/listComputer.txt";
-    fstream file
-    (filename, ios::in);
+    fstream file(filename, ios::in);
     if (!file.is_open())
     {
         cout << "Không thể mở file" << endl;
         return false;
     }
-    
+
     Computer temp;
     while (getComputerFromFile(file, temp))
     {
@@ -159,15 +157,33 @@ void updateNumberOfComputer(int count)
 
 void updateComputerToFile(Computer computer)
 {
-    fstream file("./computer/listComputer.txt", ios::app);
-    if (!file.is_open())
+
+    fstream file1("./computer/listComputer.txt", ios::in);
+    fstream temp("./computer/temp.txt", ios::out);
+
+    if (!file1.is_open())
     {
         cout << "Không thể mở file" << endl;
         return;
     }
-    file << computer.getId() << "|" << computer.getCost() << "|" << computer.getStatus() << "|" << computer.getType() << "|" << computer.getTotaltime() << endl;
-    file.close();
+    if (!temp.is_open())
+    {
+        cout << "Không thể mở file" << endl;
+        return;
+    }
+
+    Computer tempComputer;
+    while (getComputerFromFile(file1, tempComputer))
+    {
+        if (tempComputer.getId() == computer.getId())
+        {
+            tempComputer = computer;
+        }
+        temp << tempComputer.getId() << "|" << tempComputer.getCost() << "|" << tempComputer.getStatus() << "|" << tempComputer.getType() << "|" << tempComputer.getTotaltime() << endl;
+    }
+
+    file1.close();
+    temp.close();
+    system("del .\\computer\\listComputer.txt");
+    system("ren .\\computer\\temp.txt listComputer.txt");
 }
-
-// #endif
-

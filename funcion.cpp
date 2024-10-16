@@ -44,7 +44,7 @@ void optionMenu(string typeMenu, int option)
             cout << "Quản lí nhân viên" << endl;
             break;
         case 3:
-            cout << "Quản lí khách Hàng" << endl;
+            cout << "Quản lí khách hàng" << endl;
             break;
         case 4:
             cout << "Quản lí món ăn" << endl;
@@ -71,7 +71,7 @@ void optionMenu(string typeMenu, int option)
             cout << "Lịch sử ca" << endl;
             break;
         case 4:
-            cout << "Khách Hàng" << endl;
+            cout << "Khách hàng" << endl;
             break;
         case 5:
             cout << "Thoát" << endl;
@@ -339,10 +339,10 @@ void manageComputer(Admin admin)
                 addComputer(admin);
                 break;
             case 2:
-                  seenComputer(admin);
+                seenComputer(admin);
                 break;
             case 3:
-                //   seenListComputer(admin);
+                seenListComputer(admin);
                 break;
             case 4:
                 system("cls");
@@ -374,14 +374,14 @@ void seenComputer(Admin admin)
     int count = 0;
     cout << "(Nhập sai quá 3 lần tự động thoát)" << endl;
     while (count++ < 3)
-    {        
+    {
         cout << "Nhập ID máy: ";
         string temp;
-        cin >> temp;        
-       
+        cin >> temp;
+
         stringstream ss;
         ss << setw(3) << setfill('0') << temp;
-        string id = "PC" + ss.str();        
+        string id = "PC" + ss.str();
 
         computer.setId(id);
         if (checkComputer(computer))
@@ -407,14 +407,14 @@ void seenComputer(Admin admin)
                     switch (selectOption)
                     {
                     case 1:
-                     //   in4Computer(admin, computer);
+                        in4Computer(admin, computer);
                         break;
                     case 2:
-                     //   changeCost(admin, computer);
+                        changeCost(admin, computer);
                         break;
                     case 3:
-                     //   deleteComputer(admin, computer);
-                        break;
+                        deleteComputer(admin, computer);
+                        return;
                     case 4:
                         system("cls");
                         return;
@@ -430,6 +430,38 @@ void seenComputer(Admin admin)
     }
     ShowCursor(false);
     system("cls");
+}
+
+void in4Computer(Admin admin, Computer computer)
+{
+    system("cls");
+    admin.seenComputer(computer);
+    pressEnter();
+}
+
+void changeCost(Admin admin, Computer computer)
+{
+    system("cls");
+    ShowCursor(true);
+    admin.changeCost(computer);
+    ShowCursor(false);
+    pressEnter();
+}
+
+void deleteComputer(Admin admin, Computer computer)
+{
+    system("cls");
+    ShowCursor(true);
+    admin.deleteComputer(computer);
+    ShowCursor(false);
+    pressEnter();
+}
+
+void seenListComputer(Admin admin)
+{
+    system("cls");
+    admin.seenListComputer();
+    pressEnter();
 }
 
 void manageCustomer(Admin admin)
