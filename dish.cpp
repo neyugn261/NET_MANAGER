@@ -1,3 +1,4 @@
+#include "function.h"
 #include "dish.h"
 
 Dish::~Dish() {}
@@ -11,18 +12,36 @@ void Dish::setId(string id) { this->id = id; }
 void Dish::setPrice(string price) { this->price = price; }
 void Dish::setUnit(string unit) { this->unit = unit; }
 void Dish::setResidual(string residual) { this->residual = residual; }
+// ┌┐┬─└┘│├┤
+// ┌──────────────────────────────┐
+// │                              │
+// ├──────────────────────────────┤
+// │                              │
+// └──────────────────────────────┘
 /*------------------------------------Friend------------------------------------*/
 bool operator>>(istream &in, Dish &dish)
 {
-    cout << "Nhập tên món ăn: ";
+    cout << "┌───────────────────────────────────┐" << endl
+         << "│                                   │" << endl
+         << "├───────────────────────────────────┤────────────────────┐" << endl
+         << "│ 1.Nhập tên món ăn:                │ vd: mitom,pepsi... │" << endl
+         << "│ 2.Nhập giá:                       │ vd: 10000,1200...  │" << endl
+         << "│ 3.Nhập đơn vị:                    │ vd: lon,to,chai... │" << endl
+         << "│ 4.Nhập số lượng:                  │ vd: 50,100...      │" << endl
+         << "└───────────────────────────────────┘────────────────────┘" << endl;
+    Gotoxy((35 - 14) / 2, 1);
+    cout << "Thêm thực phẩm";
+
+    Gotoxy(21, 3);
     in >> dish.name;
     if (checkDish(dish))
     {
-        cout << "Món ăn đã tồn tại" << endl;
+        Gotoxy(0, 8);
+        cout << "Thực phẩm đã tồn tại" << endl;
         return false;
     }
     else
-    {   
+    {
         int id = numberFromEmptyIdDish();
         if (id == -1)
         {
@@ -34,11 +53,11 @@ bool operator>>(istream &in, Dish &dish)
         ss << setw(3) << setfill('0') << id;
         dish.id = "D" + ss.str();
 
-        cout << "Nhập giá: ";
+        Gotoxy(14, 4);
         in >> dish.price;
-        cout << "Nhập đơn vị (vd: chai, gói...): ";
+        Gotoxy(17, 5);
         in >> dish.unit;
-        cout << "Nhập số lượng: ";
+        Gotoxy(19, 6);
         in >> dish.residual;
     }
     return true;
@@ -71,7 +90,7 @@ bool checkDish(Dish &dish)
     while (getDishFromFile(file, temp))
     {
         if (temp.name == dish.name)
-        {   
+        {
             dish = temp;
             file.close();
             return true;
@@ -97,8 +116,10 @@ void updateDishToFile(Dish dish)
         return;
     }
     Dish tempDish;
-    while(getDishFromFile(file1,tempDish)){
-        if(tempDish.getName() == dish.getName()){
+    while (getDishFromFile(file1, tempDish))
+    {
+        if (tempDish.getName() == dish.getName())
+        {
             tempDish = dish;
         }
         temp1 << tempDish.getId() << "|" << tempDish.getName() << "|" << tempDish.getPrice() << "|" << tempDish.getUnit() << "|" << tempDish.getResidual() << endl;

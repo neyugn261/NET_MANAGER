@@ -158,7 +158,6 @@ void Admin::addDish(Dish dish)
     {
         cout << "Không thể mở file" << endl;
     }
-    cout << "Thêm món ăn thành công với ID là: " << dish.getId() << endl;
 }
 
 void Admin::seenDish(Dish dish)
@@ -213,7 +212,8 @@ void Admin::deleteDish(Dish dish)
         {
             temp << tempDish.getId() << "|" << tempDish.getName() << "|" << tempDish.getPrice() << "|" << tempDish.getUnit() << "|" << tempDish.getResidual() << endl;
         }
-        else{
+        else
+        {
             string temp = tempDish.getId();
             string numberPart = temp.substr(1);
             size_t pos = numberPart.find_first_not_of('0');
@@ -239,13 +239,24 @@ void Admin::deleteDish(Dish dish)
 
 void Admin::seenListDish()
 {
-    cout << "Danh sách món ăn: " << endl;
     Dish dish;
     fstream file("./dish/listDish.txt", ios::in);
+    cout << "┌──────────────────────────────────────────────────┐" << endl
+         << "│                 Danh sách món ăn                 │" << endl
+         << "├──────┬─────────────┬────────┬──────────┬─────────┤" << endl
+         << "│  ID  │ Tên món ăn  │  Giá   │  Đơn vị  │Số lượng │" << endl
+         << "├──────┼─────────────┼────────┼──────────┼─────────┤" << endl;
+
     while (getDishFromFile(file, dish))
-    {
-        cout << dish.getId() << "|" << dish.getName() << "|" << dish.getPrice() << "|" << dish.getUnit() << "|" << dish.getResidual() << endl;
+    {   
+        //tôi muốn canh lề trái
+        cout << "│ " << setw(5) << left << dish.getId() << "│ ";
+        cout << setw(12) << left << dish.getName() << "│ ";
+        cout << setw(7) << left << dish.getPrice() << "│ ";
+        cout << setw(9) << left << dish.getUnit() << "│ ";
+        cout << setw(8) << left << dish.getResidual() << "│" << endl;
     }
+    cout<< "└──────┴─────────────┴────────┴──────────┴─────────┘" << endl;
     file.close();
 }
 
@@ -286,7 +297,8 @@ void Admin::deleteCustomer(Customer customer)
         {
             temp << tempCustomer.getId() << "|" << tempCustomer.getName() << "|" << tempCustomer.getSdt() << "|" << tempCustomer.getEmail() << "|" << tempCustomer.getContribute() << endl;
         }
-        else{
+        else
+        {
             string temp = tempCustomer.getId();
             string numberPart = temp.substr(1);
             size_t pos = numberPart.find_first_not_of('0');
@@ -310,7 +322,8 @@ void Admin::deleteCustomer(Customer customer)
     cout << "Xóa khách hàng thành công" << endl;
 }
 
-void Admin::seenListCustomer(){
+void Admin::seenListCustomer()
+{
     cout << "Danh sách khách hàng: " << endl;
     Customer customer;
     fstream file("./customer/listCustomer.txt", ios::in);
@@ -377,7 +390,8 @@ void Admin::deleteComputer(Computer computer)
         {
             temp << tempComputer.getId() << "|" << tempComputer.getCost() << "|" << tempComputer.getStatus() << "|" << tempComputer.getType() << "|" << tempComputer.getTotaltime() << endl;
         }
-        else{
+        else
+        {
             string temp = tempComputer.getId();
             string numberPart = temp.substr(2);
             size_t pos = numberPart.find_first_not_of('0');
@@ -412,6 +426,5 @@ void Admin::seenListComputer()
     }
     file.close();
 }
-
 
 /*------------------------------------Other------------------------------------*/

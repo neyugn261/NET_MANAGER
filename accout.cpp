@@ -1,3 +1,4 @@
+#include "function.h"
 #include "account.h"
 
 #define KEY_UP 72
@@ -28,13 +29,14 @@ bool Account::login()
             system("cls");
             return true;
         }
-        else
-        {
-            if (role == "ONLINE")
-                cout << "Tài khoản đã đăng nhập ở một nơi khác" << endl;
-            else
-                cout << "Đăng nhập thất bại" << endl;
-        }
+
+        ShowCursor(false);
+        Gotoxy(0, 12);
+        Sleep(500);
+        cout << "Tài khoản hoặc mật khẩu không đúng" ;
+        Sleep(2000);
+        system("cls");
+        ShowCursor(true);
     }
     system("cls");
     cout << "Đã nhập sai quá 3 lần!" << endl;
@@ -87,12 +89,26 @@ bool getAccountFromFile(fstream &file, Account &account)
 
     return true;
 }
-
+// ╣ ╠
 istream &operator>>(istream &in, Account &account)
 {
-    cout << "Username: ";
+    Gotoxy(0, 0);
+    cout << "╔════════════════════════════════╗" << endl
+         << "║            Đăng nhập           ║" << endl
+         << "╠════════════════════════════════╣" << endl
+         << "║ Tài khoản:                     ║" << endl
+         << "║ ┌────────────────────────────┐ ║" << endl
+         << "║ │                            │ ║" << endl
+         << "║ └────────────────────────────┘ ║" << endl
+         << "║ Mật khẩu:                      ║" << endl
+         << "║ ┌────────────────────────────┐ ║" << endl
+         << "║ │                            │ ║" << endl
+         << "║ └────────────────────────────┘ ║" << endl
+         << "╚════════════════════════════════╝" << endl;
+
+    Gotoxy(4, 5);
     in >> account.aname;
-    cout << "Password: ";
+    Gotoxy(4, 9);
     enterpassword(account.password);
     return in;
 }

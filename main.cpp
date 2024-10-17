@@ -8,7 +8,7 @@ int main()
     if (account.login())
     {
         if (account.getStatus() == "ONLINE")
-        {
+        {               
             cout << "Tài khoản đã đăng nhập ở một nơi khác" << endl;
             return 0;
         }

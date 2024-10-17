@@ -1,5 +1,16 @@
 #include "function.h"
 
+// ╔════════════════════════╗
+// ║       Menu Admin       ║
+// ╠════════════════════════╣
+// ║  1. Quản lí máy tính   ║
+// ║  2. Quản lí nhân viên  ║
+// ║  3. Quản lí khách hàng ║
+// ║  4. Quản lí món ăn     ║
+// ║  5. Xem lịch sử        ║
+// ║  6. Thoát              ║
+// ╚════════════════════════╝
+
 /*------------------------------------CONSOLE------------------------------------*/
 
 // Hiển thị/ẩn con trỏ chuột
@@ -28,6 +39,20 @@ void pressEnter()
     system("cls");
 }
 
+void ClearLine(SHORT posY)
+{
+    CONSOLE_SCREEN_BUFFER_INFO csbi;
+    GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
+
+    int consoleWidth = csbi.srWindow.Right - csbi.srWindow.Left + 1;
+
+    Gotoxy(0, posY);
+    for (int i = 0; i < consoleWidth; i++)
+    {
+        cout << " ";
+    }
+}
+
 /*------------------------------------MENU------------------------------------*/
 
 // Hiển thị các tùy chọn của menu dựa trên loại và tùy chọn được chọn
@@ -35,25 +60,26 @@ void optionMenu(string typeMenu, int option)
 {
     if (typeMenu == "ADMIN")
     {
+        // tôi muốn độ dài là 30 vd: " 1.Quản lí máy tính           "
         switch (option)
         {
         case 1:
-            cout << "Quản lí máy tính" << endl;
+            cout << " 1.Quản lí máy tính           ";
             break;
         case 2:
-            cout << "Quản lí nhân viên" << endl;
+            cout << " 2.Quản lí nhân viên          ";
             break;
         case 3:
-            cout << "Quản lí khách hàng" << endl;
+            cout << " 3.Quản lí khách hàng         ";
             break;
         case 4:
-            cout << "Quản lí món ăn" << endl;
+            cout << " 4.Quản lí món ăn             ";
             break;
         case 5:
-            cout << "Xem lịch sử" << endl;
+            cout << " 5.Xem lịch sử                ";
             break;
         case 6:
-            cout << "Thoát" << endl;
+            cout << " 6.Thoát                      ";
             break;
         }
     }
@@ -62,19 +88,19 @@ void optionMenu(string typeMenu, int option)
         switch (option)
         {
         case 1:
-            cout << "Đặt máy và thức ăn" << endl;
+            cout << " 1.Quản lí máy tính           ";
             break;
         case 2:
-            cout << "Tình trạng máy" << endl;
+            cout << " 2.Quản lí khách hàng         ";
             break;
         case 3:
-            cout << "Lịch sử ca" << endl;
+            cout << " 3.Quản lí món ăn             ";
             break;
         case 4:
-            cout << "Khách hàng" << endl;
+            cout << " 4.Xem lịch sử                ";
             break;
         case 5:
-            cout << "Thoát" << endl;
+            cout << " 5.Thoát                      ";
             break;
         }
     }
@@ -83,16 +109,16 @@ void optionMenu(string typeMenu, int option)
         switch (option)
         {
         case 1:
-            cout << "Thêm máy" << endl;
+            cout << " 1.Thêm máy tính              ";
             break;
         case 2:
-            cout << "Xem và thay đổi thông tin máy" << endl;
+            cout << " 2.Xem thông tin máy          ";
             break;
         case 3:
-            cout << "Xem danh sách máy" << endl;
+            cout << " 3.Xem danh sách máy          ";
             break;
         case 4:
-            cout << "Thoát" << endl;
+            cout << " 4.Thoát                      ";
             break;
         }
     }
@@ -101,16 +127,16 @@ void optionMenu(string typeMenu, int option)
         switch (option)
         {
         case 1:
-            cout << "Thêm nhân viên" << endl;
+            cout << " 1.Thêm nhân viên             ";
             break;
         case 2:
-            cout << "Xem và thay đổi thông tin nhân viên" << endl;
+            cout << " 2.Xem thông tin nhân viên    ";
             break;
         case 3:
-            cout << "Xem danh sách nhân viên" << endl;
+            cout << " 3.Xem danh sách nhân viên    ";
             break;
         case 4:
-            cout << "Thoát" << endl;
+            cout << " 4.Thoát                      ";
             break;
         }
     }
@@ -119,16 +145,16 @@ void optionMenu(string typeMenu, int option)
         switch (option)
         {
         case 1:
-            cout << "Thêm khách hàng" << endl;
+            cout << " 1.Thêm khách hàng            ";
             break;
         case 2:
-            cout << "Xóa khách hàng" << endl;
+            cout << " 2.Xem thông tin khách hàng   ";
             break;
         case 3:
-            cout << "Xem danh sách khách hàng" << endl;
+            cout << " 3.Xem danh sách khách hàng   ";
             break;
         case 4:
-            cout << "Thoát" << endl;
+            cout << " 4.Thoát                      ";
             break;
         }
     }
@@ -137,16 +163,16 @@ void optionMenu(string typeMenu, int option)
         switch (option)
         {
         case 1:
-            cout << "Thêm món ăn" << endl;
+            cout << " 1.Thêm món ăn                ";
             break;
         case 2:
-            cout << "Xem và thay đổi thông tin món ăn" << endl;
+            cout << " 2.Xem thông tin món ăn       ";
             break;
         case 3:
-            cout << "Xem danh sách món ăn" << endl;
+            cout << " 3.Xem danh sách món ăn       ";
             break;
         case 4:
-            cout << "Thoát" << endl;
+            cout << " 4.Thoát                      ";
             break;
         }
     }
@@ -155,20 +181,19 @@ void optionMenu(string typeMenu, int option)
         switch (option)
         {
         case 1:
-            cout << "Xem thông tin" << endl;
+            cout << " 1.Xem thông tin món ăn       ";
             break;
-
         case 2:
-            cout << "Thay đổi giá" << endl;
+            cout << " 2.Thay đổi giá               ";
             break;
         case 3:
-            cout << "Thêm số lượng" << endl;
+            cout << " 3.Thay đổi số lượng          ";
             break;
         case 4:
-            cout << "Xóa món ăn" << endl;
+            cout << " 4.Xóa món ăn                 ";
             break;
         case 5:
-            cout << "Thoát" << endl;
+            cout << " 5.Thoát                      ";
             break;
         }
     }
@@ -177,16 +202,16 @@ void optionMenu(string typeMenu, int option)
         switch (option)
         {
         case 1:
-            cout << "Xem thông tin nhân viên" << endl;
+            cout << " 1.Xem thông tin nhân viên    ";
             break;
         case 2:
-            cout << "Thay đổi mật khẩu cho tài khoản nhân viên" << endl;
+            cout << " 2.Thay đổi mật khẩu          ";
             break;
         case 3:
-            cout << "Xóa nhân viên" << endl;
+            cout << " 3.Xóa nhân viên              ";
             break;
         case 4:
-            cout << "Thoát" << endl;
+            cout << " 4.Thoát                      ";
             break;
         }
     }
@@ -195,16 +220,16 @@ void optionMenu(string typeMenu, int option)
         switch (option)
         {
         case 1:
-            cout << "Xem thông tin máy" << endl;
+            cout << " 1.Xem thông tin máy          ";
             break;
         case 2:
-            cout << "Thay đổi giá" << endl;
+            cout << " 2.Thay đổi giá tiền          ";
             break;
         case 3:
-            cout << "Xóa máy" << endl;
+            cout << " 3.Xóa máy                    ";
             break;
         case 4:
-            cout << "Thoát" << endl;
+            cout << " 4.Thoát                      ";
             break;
         }
     }
@@ -250,15 +275,50 @@ int getMenuOptionCount(const string &typeMenu)
     return 0;
 }
 
+string getNameOfMenu(string typeMenu)
+{
+
+    // canh chữ giữa nhưng số lượng kí tự là 30 tính luôn space vd: "          Menu Admin          "
+    if (typeMenu == "ADMIN")
+        return "          Menu Admin          ";
+    if (typeMenu == "MANAGECOMPUTER")
+        return "       Quản lí máy tính       ";
+    if (typeMenu == "MANAGESTAFF")
+        return "      Quản lí nhân viên       ";
+    if (typeMenu == "MANAGECUSTOMER")
+        return "     Quản lí khách hàng       ";
+    if (typeMenu == "MANAGEDISH")
+        return "        Quản lí món ăn        ";
+    if (typeMenu == "CHANGEDISH")
+        return "                              ";
+    if (typeMenu == "STAFF")
+        return "          Menu Staff          ";
+    if (typeMenu == "SEENSTAFF")
+        return "                              ";
+    if (typeMenu == "SEENCOMPUTER")
+        return "                              ";
+    // Các loại menu khác...
+    return "          Menu not found          ";
+}
+
 // Hiển thị toàn bộ menu với tùy chọn hiện tại được làm nổi bật
 void showMenu(string typeMenu, int selectOption)
 {
+
     int optionCount = getMenuOptionCount(typeMenu);
     if (optionCount > 0)
     {
-        Gotoxy(0, 1);
+        Gotoxy(0, 0);
+        cout << "╔══════════════════════════════╗" << endl;
+        cout << "║" << getNameOfMenu(typeMenu) << "║" << endl;
+        cout << "╠══════════════════════════════╣" << endl;
         for (int i = 1; i <= optionCount; ++i)
+        {
+            cout << "║";
             printMenuOption(typeMenu, i, i == selectOption);
+            cout << "║" << endl;
+        }
+        cout << "╚══════════════════════════════╝" << endl;
     }
     else
         cout << "Menu not found!" << endl;
@@ -388,12 +448,19 @@ void seenComputer(Admin admin)
         {
             ShowCursor(false);
             system("cls");
-            SetConsoleTitle(TEXT("Menu quản lí thông tin máy"));
+            SetConsoleTitle(TEXT("Menu quản lí thông tin máy"));            
             int selectOption = 1;
 
             while (true)
-            {
+            {             
                 showMenu("SEENCOMPUTER", selectOption);
+
+                Gotoxy(1,1);
+                int space = (30 - computer.getId().length()) / 2;
+                for(int i = 0; i < space; i++)
+                    cout << " ";
+                cout << computer.getId() << endl;
+
                 int key = _getch();
                 switch (key)
                 {
@@ -662,9 +729,14 @@ void seenstaff(Admin admin)
 
             while (true)
             {
-                system("cls");
-                cout << "     Nhân viên: " << staff.getName() << endl;
                 showMenu("SEENSTAFF", selectOption);
+
+                Gotoxy(1, 1);
+                int space = (30- staff.getName().length())/2;        
+                for(int i=1; i<=space; i++)
+                    cout << " ";
+                cout << staff.getName() << endl;
+
                 int key = _getch();
                 switch (key)
                 {
@@ -776,12 +848,15 @@ void manageDish(Admin admin)
 
 void addDish(Admin admin)
 {
-    system("cls");
+    system("cls");  
     ShowCursor(true);
-    Dish dish;
+    Dish dish; 
+    
     if (cin >> dish)
     {
         admin.addDish(dish);
+        Gotoxy(0, 8);
+        cout << "Thêm thực phẩm thành công" << endl;
     }
     ShowCursor(false);
     pressEnter();
@@ -807,10 +882,15 @@ void changeDish(Admin admin)
             int selectOption = 1;
 
             while (true)
-            {
-                system("cls");
-                cout << "     Món ăn: " << dish.getName() << endl;
+            {               
                 showMenu("CHANGEDISH", selectOption);
+
+                Gotoxy(1,1);
+                int space = (30 - dish.getName().length()) / 2;
+                for(int i = 0; i < space; i++)
+                    cout << " ";
+                cout << dish.getName() << endl;                
+
                 int key = _getch();
                 switch (key)
                 {

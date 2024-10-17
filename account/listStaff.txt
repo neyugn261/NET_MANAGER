@@ -1,2 +1,4 @@
 ST003|quocnguyen|123|STAFF|OFFLINE|nguyenquocnguyen|0935462509
 ST001|dangkhoa|123|STAFF|OFFLINE|dangdangkhoa|123
+ST002|nguyenquocnguyen|123|STAFF|OFFLINE|nguyen|12
+ST004| d| d|STAFF|OFFLINE| d| d
