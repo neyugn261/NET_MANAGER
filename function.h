@@ -8,7 +8,9 @@
 #include <conio.h>
 #include <iomanip>
 #include <string>
+#include <algorithm>
 #include "admin.h"
+
 
 
 using namespace std;
@@ -37,43 +39,66 @@ void showMenu(string typeMenu, int selectOption);
 void menuAdmin(Admin admin);
 
 void manageComputer(Admin admin);
-/**/ void addComputer(Admin admin);      
-/**/ void seenComputer(Admin admin);    //xong
-/**//**/ void in4Computer(Admin admin, Computer computer); 
-/**//**/ void changeCost(Admin admin, Computer computer);       
-/**//**/ void deleteComputer(Admin admin,Computer computer);   
-/**/ void seenListComputer(Admin admin); 
+/**/ void addComputer(Admin admin);
+/**/ void seenComputer(Admin admin); // xong
+/**/ /**/ void in4Computer(Admin admin, Computer computer);
+/**/ /**/ void changeCost(Admin admin, Computer computer);
+/**/ /**/ void deleteComputer(Admin admin, Computer computer);
+/**/ void seenListComputer(Admin admin);
 
 void manageCustomer(Admin admin);
-/**/ void addCustomer(Admin admin);      
-/**/ void deleteCustomer(Admin admin);   
-/**/ void seenListCustomer(Admin admin); 
+/**/ void addCustomer(Admin admin);
+/**/ void deleteCustomer(Admin admin);
+/**/ void seenListCustomer(Admin admin);
 
 void manageStaff(Admin admin);
 /**/ void addStaff(Admin admin);
-/**/ void seenstaff(Admin admin); //xong
-/**/ /**/ void in4Staff(Admin admin, Staff staff); 
+/**/ void seenstaff(Admin admin); // xong
+/**/ /**/ void in4Staff(Admin admin, Staff staff);
 /**/ /**/ void deleteStaff(Admin admin, Staff staff);
 /**/ /**/ void changeSPassword(Admin admin, Staff staff);
-/**/ void seenListStaff(Admin admin); 
+/**/ void seenListStaff(Admin admin);
 
 void manageDish(Admin admin);
-/**/ void addDish(Admin admin); //xong
-/**/ void changeDish(Admin admin); //xong
-/**/ /**/ void in4Dish(Admin admin, Dish dish); 
-/**/ /**/ void changeCost(Admin admin, Dish dish);  
-/**/ /**/ void addQuanlity(Admin admin, Dish dish); 
-/**/ /**/ void deleteDish(Admin admin,Dish dish);
-/**/ void seenListDish(Admin admin); //nên thêm sắp xếp           
+/**/ void addDish(Admin admin);    // xong
+/**/ void changeDish(Admin admin); // xong
+/**/ /**/ void in4Dish(Admin admin, Dish dish);
+/**/ /**/ void changeCost(Admin admin, Dish dish);
+/**/ /**/ void addQuanlity(Admin admin, Dish dish);
+/**/ /**/ void deleteDish(Admin admin, Dish dish);
+/**/ void seenListDish(Admin admin); // nên thêm sắp xếp
 
 void historyA(Admin admin); // cl
 
 /*------------------------------------Menustaff------------------------------------*/
 void menuStaff(Staff staff);
 
-void openComputer(Staff staff);  // cl
+void openComputer(Staff staff);   // cl
 void statusComputer(Staff staff); // cl
-void historyS(Staff staff);      // cl
-void seenCustomer(Staff staff);  // cl
+void historyS(Staff staff);       // cl
+void seenCustomer(Staff staff);   // cl
+
+/*------------------------------------Other------------------------------------*/
+bool dataOfEmptyId(fstream &file, int &count);
+// staff
+bool checkStaff(Staff &staff);
+// dish
+void updateDishToFile(Dish dish);
+// customer
+void updateCustomerToFile(Customer customer);
+// computer
+void updateComputerToFile(Computer computer);
+
+// gộp lại
+void deleteAndRenameFile(string oldPath, string newPath);
+int numberFromEmptyId(string path);
+int getNumber(string path);
+void updateNumber(string path, int count);
+
+//gộp hàm bạn
+template <class T>
+bool getObjectFromFile(fstream &file, T &object);
+
+
 
 #endif

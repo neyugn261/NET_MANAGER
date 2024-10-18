@@ -1,3 +1,4 @@
+#include "function.h"
 #include "admin.h"
 
 void Admin::addStaff(Staff staff)
@@ -45,7 +46,7 @@ void Admin::deleteStaff(Staff staff)
     }
 
     Staff tempStaff;
-    while (getStaffFromFile(file, tempStaff))
+    while (getObjectFromFile(file, tempStaff))
     {
         if (tempStaff.getStatus() == "ONLINE")
         {
@@ -98,7 +99,7 @@ void Admin::deleteStaff(Staff staff)
     }
 
     Account tempAccount;
-    while (getAccountFromFile(file1, tempAccount))
+    while (getObjectFromFile(file1, tempAccount))
     {
         if (tempAccount.getAname() != staff.getAname())
         {
@@ -139,7 +140,7 @@ void Admin::seenListStaff()
     cout << "Danh sách nhân viên: " << endl;
     Staff staff;
     fstream file("./account/listStaff.txt", ios::in);
-    while (getStaffFromFile(file, staff))
+    while (getObjectFromFile(file, staff))
     {
         cout << staff.getId() << "|" << staff.getAname() << "|" << staff.getPass() << "|" << staff.getRole() << "|" << staff.getStatus() << "|" << staff.getName() << "|" << staff.getSdt() << endl;
     }
@@ -206,7 +207,7 @@ void Admin::deleteDish(Dish dish)
     }
 
     Dish tempDish;
-    while (getDishFromFile(file, tempDish))
+    while (getObjectFromFile(file, tempDish))
     {
         if (tempDish.getName() != dish.getName())
         {
@@ -247,7 +248,7 @@ void Admin::seenListDish()
          << "│  ID  │ Tên món ăn  │  Giá   │  Đơn vị  │Số lượng │" << endl
          << "├──────┼─────────────┼────────┼──────────┼─────────┤" << endl;
 
-    while (getDishFromFile(file, dish))
+    while (getObjectFromFile(file, dish))
     {   
         //tôi muốn canh lề trái
         cout << "│ " << setw(5) << left << dish.getId() << "│ ";
@@ -291,7 +292,7 @@ void Admin::deleteCustomer(Customer customer)
     }
 
     Customer tempCustomer;
-    while (getCustomerFromFile(file, tempCustomer))
+    while (getObjectFromFile(file, tempCustomer))
     {
         if (tempCustomer.getName() != customer.getName())
         {
@@ -327,7 +328,7 @@ void Admin::seenListCustomer()
     cout << "Danh sách khách hàng: " << endl;
     Customer customer;
     fstream file("./customer/listCustomer.txt", ios::in);
-    while (getCustomerFromFile(file, customer))
+    while (getObjectFromFile(file, customer))
     {
         cout << customer.getId() << "|" << customer.getName() << "|" << customer.getSdt() << "|" << customer.getEmail() << "|" << customer.getContribute() << endl;
     }
@@ -384,7 +385,7 @@ void Admin::deleteComputer(Computer computer)
     }
 
     Computer tempComputer;
-    while (getComputerFromFile(file, tempComputer))
+    while (getObjectFromFile(file, tempComputer))
     {
         if (tempComputer.getId() != computer.getId())
         {
@@ -420,7 +421,7 @@ void Admin::seenListComputer()
     cout << "Danh sách máy: " << endl;
     Computer computer;
     fstream file("./computer/listComputer.txt", ios::in);
-    while (getComputerFromFile(file, computer))
+    while (getObjectFromFile(file, computer))
     {
         cout << computer.getId() << "|" << computer.getCost() << "|" << computer.getStatus() << "|" << computer.getType() << "|" << computer.getTotaltime() << endl;
     }

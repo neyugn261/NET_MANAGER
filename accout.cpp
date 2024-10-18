@@ -33,7 +33,7 @@ bool Account::login()
         ShowCursor(false);
         Gotoxy(0, 12);
         Sleep(500);
-        cout << "Tài khoản hoặc mật khẩu không đúng" ;
+        cout << "Tài khoản hoặc mật khẩu không đúng";
         Sleep(2000);
         system("cls");
         ShowCursor(true);
@@ -61,8 +61,10 @@ bool checkAccount(Account &account)
     }
 
     Account temp;
-    while (getAccountFromFile(file, temp))
+
+    while (getObjectFromFile(file, temp))
     {
+
         if (temp.aname == account.aname && temp.password == account.password)
         {
             account.role = temp.role;
@@ -70,25 +72,12 @@ bool checkAccount(Account &account)
             return true;
         }
     }
+  
 
     file.close();
     return false;
 }
 
-bool getAccountFromFile(fstream &file, Account &account)
-{
-    string line;
-    if (!getline(file, line) || line.empty())
-        return false;
-
-    stringstream ss(line);
-    getline(ss, account.aname, '|');
-    getline(ss, account.password, '|');
-    getline(ss, account.role, '|');
-    getline(ss, account.status);
-
-    return true;
-}
 // ╣ ╠
 istream &operator>>(istream &in, Account &account)
 {
@@ -110,6 +99,7 @@ istream &operator>>(istream &in, Account &account)
     in >> account.aname;
     Gotoxy(4, 9);
     enterpassword(account.password);
+
     return in;
 }
 /*------------------------------------Other------------------------------------*/

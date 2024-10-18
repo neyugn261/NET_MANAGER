@@ -1,5 +1,5 @@
 #ifndef CUSTOMER_H
-#define MACRO
+#define CUSTOMER_H 
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -9,6 +9,8 @@
 using namespace std;
 
 // gồm: id, name, sdt, email, contribute
+
+
 class Customer
 {
 private:
@@ -30,21 +32,15 @@ public:
     void setName(string);
     void setSdt(string);
     void setEmail(string);
-    void setContribute(string);
-
-    friend bool getCustomerFromFile(fstream &file, Customer &customer);
+    void setContribute(string);        
+  
     friend bool checkCustomer(Customer &customer);
     friend bool operator>>(istream &in, Customer &customer);
 };
 /*------------------------------------Friend------------------------------------*/
-bool getCustomerFromFile(fstream &file, Customer &customer);
 bool checkCustomer(Customer &customer);
 bool operator>>(istream &in, Customer &customer);
 /*------------------------------------Other------------------------------------*/
-void updateCustomerToFile(Customer customer);
-bool dataOfEmptyIdCustomer(fstream &file, int &count);
-int numberFromEmptyIdCustomer();
-int getNumberOfCustomer();
-void updateNumberOfCustomer(int count);
+
 
 #endif

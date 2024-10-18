@@ -1,3 +1,4 @@
+#include "function.h"
 #include "computer.h"
 
 Computer::~Computer() {}
@@ -17,12 +18,18 @@ void Computer::setTotaltime(string totaltime) { this->totaltime = totaltime; }
 
 bool operator>>(istream &in, Computer &computer)
 {
-    int id = numberFromEmptyId();
+    cout << "Nhập giá: ";
+    in >> computer.cost;
+
+    cout << "Nhập loại: ";
+    in >> computer.type;
+
+    int id = numberFromEmptyId("./computer/emptyID.txt");
     if (id == -1)
     {
-        id = getNumberOfComputer();
+        id = getNumber("./computer/computerID.txt");
         id++;
-        updateNumberOfComputer(id);
+        updateNumber("./computer/computerID.txt", id);
     }
     stringstream ss;
     ss << setw(3) << setfill('0') << id;
@@ -30,26 +37,6 @@ bool operator>>(istream &in, Computer &computer)
     computer.status = "OFFLINE";
     computer.totaltime = "0";
 
-    cout << "Nhập giá: ";
-    in >> computer.cost;
-
-    cout << "Nhập loại: ";
-    in >> computer.type;
-
-    return true;
-}
-
-bool getComputerFromFile(fstream &file, Computer &computer)
-{
-    string line;
-    if (!getline(file, line) || line.empty())
-        return false;
-    stringstream ss(line);
-    getline(ss, computer.id, '|');
-    getline(ss, computer.cost, '|');
-    getline(ss, computer.status, '|');
-    getline(ss, computer.type, '|');
-    getline(ss, computer.totaltime);
     return true;
 }
 
@@ -64,7 +51,7 @@ bool checkComputer(Computer &computer)
     }
 
     Computer temp;
-    while (getComputerFromFile(file, temp))
+    while (getObjectFromFile(file, temp))
     {
         if (temp.getId() == computer.getId())
         {
@@ -78,112 +65,3 @@ bool checkComputer(Computer &computer)
 }
 
 /*------------------------------------Other------------------------------------*/
-
-bool dataOfEmptyIdComputer(fstream &file, int &count)
-{
-    string line;
-    getline(file, line);
-    if (line.empty())
-        return false;
-    else
-    {
-        count = stoi(line);
-        return true;
-    }
-}
-
-int numberFromEmptyId()
-{
-    int count = -1;
-    string path1 = "./computer/emptyID.txt";
-    string tempPath1 = "./computer/temp1.txt";
-    fstream file1(path1, ios::in);
-    fstream temp1(tempPath1, ios::out);
-    if (!file1.is_open())
-    {
-        cout << "Không thể mở file" << endl;
-        return count;
-    }
-    if (!temp1.is_open())
-    {
-        cout << "Không thể mở file" << endl;
-        return count;
-    }
-    if (dataOfEmptyIdComputer(file1, count))
-    {
-        int ans = count;
-        while (dataOfEmptyIdComputer(file1, count))
-        {
-            temp1 << count << endl;
-        }
-        file1.close();
-        temp1.close();
-        system("del .\\computer\\emptyID.txt");
-        system("ren .\\computer\\temp1.txt emptyID.txt");
-        return ans;
-    }
-    file1.close();
-    temp1.close();
-    system("del .\\computer\\temp1.txt");
-    return count;
-}
-
-int getNumberOfComputer()
-{
-    int count = -1;
-    fstream file("./computer/computerID.txt", ios::in);
-    if (!file.is_open())
-    {
-        cout << "Không thể mở file" << endl;
-        return count;
-    }
-    else
-        file >> count;
-    file.close();
-    return count;
-}
-
-void updateNumberOfComputer(int count)
-{
-    fstream file("./computer/computerID.txt", ios::out);
-    if (!file.is_open())
-    {
-        cout << "Không thể mở file" << endl;
-        return;
-    }
-    file << count;
-    file.close();
-}
-
-void updateComputerToFile(Computer computer)
-{
-
-    fstream file1("./computer/listComputer.txt", ios::in);
-    fstream temp("./computer/temp.txt", ios::out);
-
-    if (!file1.is_open())
-    {
-        cout << "Không thể mở file" << endl;
-        return;
-    }
-    if (!temp.is_open())
-    {
-        cout << "Không thể mở file" << endl;
-        return;
-    }
-
-    Computer tempComputer;
-    while (getComputerFromFile(file1, tempComputer))
-    {
-        if (tempComputer.getId() == computer.getId())
-        {
-            tempComputer = computer;
-        }
-        temp << tempComputer.getId() << "|" << tempComputer.getCost() << "|" << tempComputer.getStatus() << "|" << tempComputer.getType() << "|" << tempComputer.getTotaltime() << endl;
-    }
-
-    file1.close();
-    temp.close();
-    system("del .\\computer\\listComputer.txt");
-    system("ren .\\computer\\temp.txt listComputer.txt");
-}

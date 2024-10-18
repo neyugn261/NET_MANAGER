@@ -418,6 +418,7 @@ void addComputer(Admin admin)
     system("cls");
     ShowCursor(true);
     Computer computer;
+
     if (cin >> computer)
     {
         admin.addComputer(computer);
@@ -448,16 +449,16 @@ void seenComputer(Admin admin)
         {
             ShowCursor(false);
             system("cls");
-            SetConsoleTitle(TEXT("Menu quản lí thông tin máy"));            
+            SetConsoleTitle(TEXT("Menu quản lí thông tin máy"));
             int selectOption = 1;
 
             while (true)
-            {             
+            {
                 showMenu("SEENCOMPUTER", selectOption);
 
-                Gotoxy(1,1);
+                Gotoxy(1, 1);
                 int space = (30 - computer.getId().length()) / 2;
-                for(int i = 0; i < space; i++)
+                for (int i = 0; i < space; i++)
                     cout << " ";
                 cout << computer.getId() << endl;
 
@@ -677,12 +678,15 @@ void addStaff(Admin admin)
         cout << "Nhập số điện thoại: ";
         cin >> sdt;
 
-        int id = numberFromEmptyIdSt();
+        // đường dẫn
+
+        int id = numberFromEmptyId("./staff/emtyId.txt");
+
         if (id == -1)
         {
-            id = getNumberOfStaff();
+            id = getNumber("./staff/staffID.txt");
             id++;
-            updateNumberOfStaff(id);
+            updateNumber("staff/staffID.txt", id);
         }
 
         stringstream ss;
@@ -732,8 +736,8 @@ void seenstaff(Admin admin)
                 showMenu("SEENSTAFF", selectOption);
 
                 Gotoxy(1, 1);
-                int space = (30- staff.getName().length())/2;        
-                for(int i=1; i<=space; i++)
+                int space = (30 - staff.getName().length()) / 2;
+                for (int i = 1; i <= space; i++)
                     cout << " ";
                 cout << staff.getName() << endl;
 
@@ -848,10 +852,10 @@ void manageDish(Admin admin)
 
 void addDish(Admin admin)
 {
-    system("cls");  
+    system("cls");
     ShowCursor(true);
-    Dish dish; 
-    
+    Dish dish;
+
     if (cin >> dish)
     {
         admin.addDish(dish);
@@ -882,14 +886,14 @@ void changeDish(Admin admin)
             int selectOption = 1;
 
             while (true)
-            {               
+            {
                 showMenu("CHANGEDISH", selectOption);
 
-                Gotoxy(1,1);
+                Gotoxy(1, 1);
                 int space = (30 - dish.getName().length()) / 2;
-                for(int i = 0; i < space; i++)
+                for (int i = 0; i < space; i++)
                     cout << " ";
-                cout << dish.getName() << endl;                
+                cout << dish.getName() << endl;
 
                 int key = _getch();
                 switch (key)
@@ -1003,3 +1007,317 @@ void menuStaff(Staff staff)
     }
     ShowCursor(true);
 }
+
+/*------------------------------------Other------------------------------------*/
+bool dataOfEmptyId(fstream &file, int &count)
+{
+    string line;
+    if (!getline(file, line) || line.empty())
+        return false;
+    stringstream ss(line);
+    ss >> count;
+    return true;
+}
+
+// Staff
+
+bool checkStaff(Staff &staff)
+{
+    string filename = "./account/listStaff.txt";
+    fstream file(filename, ios::in);
+    if (!file.is_open())
+    {
+        cout << "Không thể mở file" << endl;
+        return false;
+    }
+    Staff temp;
+    while (getObjectFromFile(file, temp))
+    {
+        if (temp.getName() == staff.getName())
+        {
+            staff = temp;
+            file.close();
+            return true;
+        }
+    }
+    file.close();
+    return false;
+}
+
+// Dish
+void updateDishToFile(Dish dish)
+{
+    fstream file1("./dish/listDish.txt", ios::in);
+    fstream temp1("./dish/temp1.txt", ios::out);
+    if (!file1.is_open())
+    {
+        cout << "Không thể mở file" << endl;
+        return;
+    }
+    if (!temp1.is_open())
+    {
+        cout << "Không thể mở file" << endl;
+        return;
+    }
+    Dish tempDish;
+    while (getObjectFromFile(file1, tempDish))
+    {
+        if (tempDish.getName() == dish.getName())
+        {
+            tempDish = dish;
+        }
+        temp1 << tempDish.getId() << "|" << tempDish.getName() << "|" << tempDish.getPrice() << "|" << tempDish.getUnit() << "|" << tempDish.getResidual() << endl;
+    }
+    file1.close();
+    temp1.close();
+    system("del .\\dish\\listDish.txt");
+    system("ren .\\dish\\temp1.txt listDish.txt");
+}
+
+// Customer
+void updateCustomerToFile(Customer customer)
+{
+    fstream file1("./customer/listCustomer.txt", ios::in);
+    fstream temp1("./customer/temp1.txt", ios::out);
+    if (!file1.is_open())
+    {
+        cout << "Không thể mở file" << endl;
+        return;
+    }
+    if (!temp1.is_open())
+    {
+        cout << "Không thể mở file" << endl;
+        return;
+    }
+    Customer tempCustomer;
+    while (getObjectFromFile(file1, tempCustomer))
+    {
+        if (tempCustomer.getName() == customer.getName())
+        {
+            tempCustomer = customer;
+        }
+        temp1 << tempCustomer.getId() << "|" << tempCustomer.getName() << "|" << tempCustomer.getSdt() << "|" << tempCustomer.getEmail() << "|" << tempCustomer.getContribute() << endl;
+    }
+    file1.close();
+    temp1.close();
+    system("del .\\customer\\listCustomer.txt");
+    system("ren .\\customer\\temp1.txt listCustomer.txt");
+}
+
+// Computer
+
+void updateComputerToFile(Computer computer)
+{
+
+    fstream file1("./computer/listComputer.txt", ios::in);
+    fstream temp("./computer/temp.txt", ios::out);
+
+    if (!file1.is_open())
+    {
+        cout << "Không thể mở file" << endl;
+        return;
+    }
+    if (!temp.is_open())
+    {
+        cout << "Không thể mở file" << endl;
+        return;
+    }
+
+    Computer tempComputer;
+    while (getObjectFromFile(file1, tempComputer))
+    {
+        if (tempComputer.getId() == computer.getId())
+        {
+            tempComputer = computer;
+        }
+        temp << tempComputer.getId() << "|" << tempComputer.getCost() << "|" << tempComputer.getStatus() << "|" << tempComputer.getType() << "|" << tempComputer.getTotaltime() << endl;
+    }
+
+    file1.close();
+    temp.close();
+    deleteAndRenameFile("./computer/listComputer.txt", "./computer/temp.txt");
+}
+
+// gộp lại
+void deleteAndRenameFile(string oldPath, string newPath)
+{
+    // oldpath: ./account/emptyID.txt";  => newOldPath: account\\emptyID.txt
+    //      newpath: ./account/temp.txt  => newNewPath: account\\temp.txt
+
+    std::string newOldPath = oldPath.substr(2);                    // Bỏ qua "./"
+    std::replace(newOldPath.begin(), newOldPath.end(), '/', '\\'); // Thay thế '/' bằng '\'
+
+    std::string newNewPath = newPath.substr(2);                    // Bỏ qua "./"
+    std::replace(newNewPath.begin(), newNewPath.end(), '/', '\\'); // Thay thế '/' bằng '\'
+
+    system(("del " + newOldPath).c_str());
+
+    // newOldPath: account\\EmptyID.txt => newNewPath: emptyID.txt
+    newOldPath = newOldPath.substr(newOldPath.find_first_of("\\") + 1);
+
+    system(("ren " + newNewPath + " " + newOldPath).c_str());
+}
+
+int numberFromEmptyId(string path)
+{
+    int count = -1;
+    // vd: path: ./account/EmptyID.txt";
+    //     tempath: ./account/temp.txt
+
+    fstream file(path, ios::in);
+
+    if (!file.is_open())
+    {
+        cout << "Không thể mở file" << endl;
+        return count;
+    }
+
+    if (dataOfEmptyId(file, count))
+    {
+        int ans = count;
+        string tempPath = path.substr(0, path.find_last_of("/")) + "/temp.txt"; // "\\" không cần thiết
+        fstream temp(tempPath, ios::out);
+        if (!temp.is_open())
+        {
+            cout << "Không thể mở file" << endl;
+            return count;
+        }
+
+        while (dataOfEmptyId(file, count))
+        {
+            temp << count << endl;
+        }
+        file.close();
+        temp.close();
+        deleteAndRenameFile(path, tempPath);
+        temp.close();
+        return ans;
+        
+    }
+    file.close();
+
+    return count;
+}
+
+int getNumber(string path)
+{
+    int count = -1;
+    fstream file(path, ios::in);
+    if (!file.is_open())
+    {
+        cout << "Không thể mở file" << endl;
+        return count;
+    }
+    else
+        file >> count;
+    file.close();
+    return count;
+}
+
+void updateNumber(string path, int count)
+{
+    fstream file(path, ios::out);
+    if (!file.is_open())
+    {
+        cout << "Không thể mở file" << endl;
+        return;
+    }
+    file << count;
+    file.close();
+}
+
+
+
+// gộp hàm bạn
+template <class T>
+bool getObjectFromFile(fstream &file, T &object)
+{
+    string line;
+    if (!getline(file, line) || line.empty())
+        return false;
+
+    stringstream ss(line);
+
+    if constexpr (is_same_v<T, Customer>)
+    {
+        string temp;
+        getline(ss, temp, '|');
+        object.setId(temp);
+        getline(ss, temp, '|');
+        object.setName(temp);
+        getline(ss, temp, '|');
+        object.setSdt(temp);
+        getline(ss, temp, '|');
+        object.setEmail(temp);
+        getline(ss, temp);
+        object.setContribute(temp);
+    }
+    else if constexpr (is_same_v<T, Computer>)
+    {
+        string temp;
+        getline(ss, temp, '|');
+        object.setId(temp);
+        getline(ss, temp, '|');
+        object.setCost(temp);
+        getline(ss, temp, '|');
+        object.setStatus(temp);
+        getline(ss, temp, '|');
+        object.setType(temp);
+        getline(ss, temp);
+        object.setTotaltime(temp);
+    }
+    else if constexpr (is_same_v<T, Dish>)
+    {
+        string temp;
+        getline(ss, temp, '|');
+        object.setId(temp);
+        getline(ss, temp, '|');
+        object.setName(temp);
+        getline(ss, temp, '|');
+        object.setPrice(temp);
+        getline(ss, temp, '|');
+        object.setUnit(temp);
+        getline(ss, temp);
+        object.setResidual(temp);
+    }
+    else if constexpr (is_same_v<T, Staff>)
+    {
+        string temp;
+        getline(ss, temp, '|');
+        object.setId(temp);
+        getline(ss, temp, '|');
+        object.setName(temp);
+        getline(ss, temp, '|');
+        object.setSdt(temp);
+        getline(ss, temp, '|');
+        object.setRole(temp);
+        getline(ss, temp, '|');
+        object.setAname(temp);
+        getline(ss, temp, '|');
+        object.setPass(temp);
+        getline(ss, temp);
+        object.setStatus(temp);
+    }
+    else if constexpr (is_same_v<T, Account>)
+    {
+        string temp;
+        getline(ss, temp, '|');
+        object.setAname(temp);
+        getline(ss, temp, '|');
+        object.setPass(temp);
+        getline(ss, temp, '|');
+        object.setRole(temp);
+        getline(ss, temp);
+        object.setStatus(temp);
+    }
+
+    return true;
+}
+
+// Explicit instantiation
+template bool getObjectFromFile<Customer>(fstream &file, Customer &object);
+template bool getObjectFromFile<Computer>(fstream &file, Computer &object);
+template bool getObjectFromFile<Dish>(fstream &file, Dish &object);
+template bool getObjectFromFile<Staff>(fstream &file, Staff &object);
+template bool getObjectFromFile<Account>(fstream &file, Account &object);
+

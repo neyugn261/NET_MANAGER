@@ -31,19 +31,13 @@ public:
     void setType(string);
     void setTotaltime(string);
 
-    friend bool operator>>(istream &in, Computer &computer);   
-    friend bool getComputerFromFile(fstream &file, Computer &computer);  
+    friend bool operator>>(istream &in, Computer &computer); 
+ 
     friend bool checkComputer(Computer &computer);
 };
 /*------------------------------------Friend------------------------------------*/
 bool operator>>(istream &in, Computer &computer);
-bool getComputerFromFile(fstream &file, Computer &computer);
 bool checkComputer(Computer &computer);
 /*------------------------------------Other------------------------------------*/
-bool dataOfEmptyIdComputer(fstream &file, int &count);
-int numberFromEmptyId();
-int getNumberOfComputer();
-void updateNumberOfComputer(int count);
-void updateComputerToFile(Computer computer);
 
 #endif

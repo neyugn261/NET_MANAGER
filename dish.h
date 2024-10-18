@@ -33,19 +33,14 @@ public:
     void setResidual(string);
 
     friend bool operator>>(istream &in, Dish &dish);
-    friend bool getDishFromFile(fstream &file, Dish &dish);
+  
     friend bool checkDish(Dish &dish);
 };
 /*------------------------------------Friend------------------------------------*/
 bool operator>>(istream &in, Dish &dish);
-bool getDishFromFile(fstream &file, Dish &dish);
 bool checkDish(Dish &dish);
 /*------------------------------------Other------------------------------------*/
-void updateDishToFile(Dish dish);
-bool dataOfEmptyIdDish(fstream &file, int &count);
-int numberFromEmptyIdDish();
-int getNumberOfDish();
-void updateNumberOfDish(int count);
+
 
 
 
