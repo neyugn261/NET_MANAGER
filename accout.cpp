@@ -72,7 +72,6 @@ bool checkAccount(Account &account)
             return true;
         }
     }
-  
 
     file.close();
     return false;

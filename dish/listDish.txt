@@ -1,4 +1,4 @@
-D001|pepsi|12000|lon|0
+D001|pepsi|12000|lon|12000
 D003|mitom|12000|bat|100
 D006|7up|10000|lon|10
 D004|siting|10000|lon|12

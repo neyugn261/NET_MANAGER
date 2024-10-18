@@ -21,20 +21,20 @@ void Dish::setResidual(string residual) { this->residual = residual; }
 /*------------------------------------Friend------------------------------------*/
 bool operator>>(istream &in, Dish &dish)
 {
-    cout << "┌───────────────────────────────────┐" << endl
-         << "│                                   │" << endl
-         << "├───────────────────────────────────┤────────────────────┐" << endl
-         << "│ 1.Nhập tên món ăn:                │ vd: mitom,pepsi... │" << endl
-         << "│ 2.Nhập giá:                       │ vd: 10000,1200...  │" << endl
-         << "│ 3.Nhập đơn vị:                    │ vd: lon,to,chai... │" << endl
-         << "│ 4.Nhập số lượng:                  │ vd: 50,100...      │" << endl
-         << "└───────────────────────────────────┘────────────────────┘" << endl;
+    cout << "╔═══════════════════════════════════╗" << endl
+         << "║          Thêm thực phẩm           ║" << endl
+         << "╠═══════════════════════════════════╣───────────────────────┐" << endl  
+         << "║ 1.Nhập tên món ăn:                ║ Tên: mitom,pepsi...   │" << endl
+         << "║ 2.Nhập giá: 10000  (VND)          ║ Giá: 10000,1200...    │" << endl
+         << "║ 3.Nhập đơn vị:                    ║ Đơn vị: lon,to,chai...│" << endl
+         << "║ 4.Nhập số lượng:                  ║ Số lưong: 50,100...   │" << endl
+         << "╚;══════════════════════════════════╝───────────────────────┘" << endl;
     Gotoxy((35 - 14) / 2, 1);
     cout << "Thêm thực phẩm";
 
     Gotoxy(21, 3);
     in >> dish.name;
-    if (checkDish(dish))
+    if (checkObject(dish))
     {
         Gotoxy(0, 8);
         cout << "Thực phẩm đã tồn tại" << endl;
@@ -62,29 +62,5 @@ bool operator>>(istream &in, Dish &dish)
     }
     return true;
 }
-bool checkDish(Dish &dish)
-{
-    string filename = "./dish/listDish.txt";
-    fstream file(filename, ios::in);
-    if (!file.is_open())
-    {
-        cout << "Không thể mở file" << endl;
-        return false;
-    }
 
-    Dish temp;
-    while (getObjectFromFile(file, temp))
-    {
-        if (temp.name == dish.name)
-        {
-            dish = temp;
-            file.close();
-            return true;
-        }
-    }
-
-    file.close();
-    return false;
-}
 /*------------------------------------Other------------------------------------*/
-

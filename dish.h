@@ -7,7 +7,6 @@
 #include <conio.h>
 #include <iomanip>
 
-
 using namespace std;
 
 class Dish
@@ -33,15 +32,9 @@ public:
     void setResidual(string);
 
     friend bool operator>>(istream &in, Dish &dish);
-  
-    friend bool checkDish(Dish &dish);
 };
 /*------------------------------------Friend------------------------------------*/
 bool operator>>(istream &in, Dish &dish);
-bool checkDish(Dish &dish);
 /*------------------------------------Other------------------------------------*/
-
-
-
 
 #endif

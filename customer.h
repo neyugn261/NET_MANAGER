@@ -1,15 +1,11 @@
 #ifndef CUSTOMER_H
-#define CUSTOMER_H 
+#define CUSTOMER_H
+
 #include <iostream>
-#include <fstream>
-#include <sstream>
-#include <string>
-#include <iomanip>
 
 using namespace std;
 
 // gồm: id, name, sdt, email, contribute
-
 
 class Customer
 {
@@ -32,15 +28,13 @@ public:
     void setName(string);
     void setSdt(string);
     void setEmail(string);
-    void setContribute(string);        
-  
-    friend bool checkCustomer(Customer &customer);
+    void setContribute(string);
+
     friend bool operator>>(istream &in, Customer &customer);
 };
 /*------------------------------------Friend------------------------------------*/
-bool checkCustomer(Customer &customer);
+
 bool operator>>(istream &in, Customer &customer);
 /*------------------------------------Other------------------------------------*/
-
 
 #endif

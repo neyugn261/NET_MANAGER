@@ -137,13 +137,24 @@ void Admin::changeSPassword(Staff staff)
 
 void Admin::seenListStaff()
 {
-    cout << "Danh sách nhân viên: " << endl;
     Staff staff;
     fstream file("./account/listStaff.txt", ios::in);
+    cout << "┌───────────────────────────────────────────────────────────────────────────────────────────────┐" << endl
+         << "│                                        Danh sách nhân viên                                    │" << endl
+         << "├────────┬─────────────────────┬───────────────┬────────────┬────────────────────┬──────────────┤" << endl
+         << "│   ID   │     Họ và tên       │ Số điện thoại │ Trạng thái │      Tài khoản     │   Mật khẩu   │" << endl
+         << "├────────┼─────────────────────┼───────────────┼────────────┼────────────────────┼──────────────┤" << endl;
+
     while (getObjectFromFile(file, staff))
     {
-        cout << staff.getId() << "|" << staff.getAname() << "|" << staff.getPass() << "|" << staff.getRole() << "|" << staff.getStatus() << "|" << staff.getName() << "|" << staff.getSdt() << endl;
+        cout << "│ " << setw(7) << left << staff.getId() << "│ ";
+        cout << setw(20) << left << staff.getName() << "│ ";
+        cout << setw(14) << left << staff.getSdt() << "│ ";
+        cout << setw(11) << left << staff.getStatus() << "│ ";
+        cout << setw(19) << left << staff.getAname() << "│ ";
+        cout << setw(13) << left << staff.getPass() << "│" << endl;
     }
+    cout << "└────────┴─────────────────────┴───────────────┴────────────┴────────────────────┴──────────────┘" << endl;
     file.close();
 }
 
@@ -163,32 +174,49 @@ void Admin::addDish(Dish dish)
 
 void Admin::seenDish(Dish dish)
 {
-    cout << "ID x: " << dish.getId() << endl;
+    cout << "ID: " << dish.getId() << endl;
     cout << "Tên món ăn: " << dish.getName() << endl;
     cout << "Giá: " << dish.getPrice() << endl;
     cout << "Đơn vị: " << dish.getUnit() << endl;
     cout << "Tồn dư: " << dish.getResidual() << endl;
 }
 
-void Admin::changeCost(Dish dish)
+void Admin::changeCost(Dish &dish)
 {
     string price;
-    cout << "Nhập giá mới: ";
+    ClearLine(47, 4, dish.getPrice().length());
+
+    Gotoxy(47, 4);
+    ShowCursor(true);
     cin >> price;
+    ShowCursor(false);
     dish.setPrice(price);
+    Sleep(200);
+    Gotoxy(42, 7);
+    cout << "Đổi giá thành công";
+    Sleep(700);
+    ClearLine(42, 7, 23);
     updateDishToFile(dish);
-    cout << "Đổi giá thành công" << endl;
+    checkObject(dish);
 }
 
-void Admin::addQuanlity(Dish dish)
+void Admin::addQuanlity(Dish &dish)
 {
     string quanlity;
-    cout << "Nhập số lượng: ";
+    ClearLine(52,5,dish.getResidual().length());
+    
+    Gotoxy(52, 5);
+    ShowCursor(true);
     cin >> quanlity;
-    int temp = stoi(dish.getResidual()) + stoi(quanlity);
-    dish.setResidual(to_string(temp));
+    ShowCursor(false);    
+    dish.setResidual(quanlity);
+    Sleep(200);
+    Gotoxy(42, 7);
+    cout << "Đổi số lượng thành công";
+    Sleep(700);
+    ClearLine(42, 7, 23);
     updateDishToFile(dish);
-    cout << "Thêm số lượng thành công" << endl;
+    checkObject(dish);
 }
 
 void Admin::deleteDish(Dish dish)
@@ -249,15 +277,15 @@ void Admin::seenListDish()
          << "├──────┼─────────────┼────────┼──────────┼─────────┤" << endl;
 
     while (getObjectFromFile(file, dish))
-    {   
-        //tôi muốn canh lề trái
+    {
+        // tôi muốn canh lề trái
         cout << "│ " << setw(5) << left << dish.getId() << "│ ";
         cout << setw(12) << left << dish.getName() << "│ ";
         cout << setw(7) << left << dish.getPrice() << "│ ";
         cout << setw(9) << left << dish.getUnit() << "│ ";
         cout << setw(8) << left << dish.getResidual() << "│" << endl;
     }
-    cout<< "└──────┴─────────────┴────────┴──────────┴─────────┘" << endl;
+    cout << "└──────┴─────────────┴────────┴──────────┴─────────┘" << endl;
     file.close();
 }
 
@@ -325,13 +353,24 @@ void Admin::deleteCustomer(Customer customer)
 
 void Admin::seenListCustomer()
 {
-    cout << "Danh sách khách hàng: " << endl;
+
     Customer customer;
     fstream file("./customer/listCustomer.txt", ios::in);
+    cout << "┌────────────────────────────────────────────────────────────────────────────┐" << endl
+         << "│                           Danh sách khách hàng                             │" << endl
+         << "├────────┬──────────────────┬─────────────────┬───────────────────┬──────────┤" << endl
+         << "│   ID   │  Tên khách hàng  │  Số điện thoại  │       Email       │ Đóng góp │" << endl
+         << "├────────┼──────────────────┼─────────────────┼───────────────────┼──────────┤" << endl;
+
     while (getObjectFromFile(file, customer))
     {
-        cout << customer.getId() << "|" << customer.getName() << "|" << customer.getSdt() << "|" << customer.getEmail() << "|" << customer.getContribute() << endl;
+        cout << "│ " << setw(7) << left << customer.getId() << "│ ";
+        cout << setw(17) << left << customer.getName() << "│ ";
+        cout << setw(16) << left << customer.getSdt() << "│ ";
+        cout << setw(18) << left << customer.getEmail() << "│ ";
+        cout << setw(9) << left << customer.getContribute() << "│" << endl;
     }
+    cout << "└────────┴──────────────────┴─────────────────┴───────────────────┴──────────┘" << endl;
     file.close();
 }
 
@@ -340,19 +379,19 @@ void Admin::addComputer(Computer computer)
     fstream file("./computer/listComputer.txt", ios::app);
     if (file.is_open())
     { // id|name|cost|status|type|totaltime
-        file << computer.getId() << "|" << computer.getCost() << "|" << computer.getStatus() << "|" << computer.getType() << "|" << computer.getTotaltime() << endl;
+        file << computer.getName() << "|" << computer.getCost() << "|" << computer.getStatus() << "|" << computer.getType() << "|" << computer.getTotaltime() << endl;
         file.close();
     }
     else
     {
         cout << "Không thể mở file" << endl;
     }
-    cout << "Thêm máy thành công với ID là: " << computer.getId() << endl;
+    cout << "Thêm máy thành công với ID là: " << computer.getName() << endl;
 }
 
 void Admin::seenComputer(Computer computer)
 {
-    cout << "ID: " << computer.getId() << endl;
+    cout << "ID: " << computer.getName() << endl;
     cout << "Giá: " << computer.getCost() << endl;
     cout << "Trạng thái: " << computer.getStatus() << endl;
     cout << "Loại: " << computer.getType() << endl;
@@ -387,13 +426,13 @@ void Admin::deleteComputer(Computer computer)
     Computer tempComputer;
     while (getObjectFromFile(file, tempComputer))
     {
-        if (tempComputer.getId() != computer.getId())
+        if (tempComputer.getName() != computer.getName())
         {
-            temp << tempComputer.getId() << "|" << tempComputer.getCost() << "|" << tempComputer.getStatus() << "|" << tempComputer.getType() << "|" << tempComputer.getTotaltime() << endl;
+            temp << tempComputer.getName() << "|" << tempComputer.getCost() << "|" << tempComputer.getStatus() << "|" << tempComputer.getType() << "|" << tempComputer.getTotaltime() << endl;
         }
         else
         {
-            string temp = tempComputer.getId();
+            string temp = tempComputer.getName();
             string numberPart = temp.substr(2);
             size_t pos = numberPart.find_first_not_of('0');
             temp = (pos != string::npos) ? numberPart.substr(pos) : "0";
@@ -418,13 +457,22 @@ void Admin::deleteComputer(Computer computer)
 
 void Admin::seenListComputer()
 {
-    cout << "Danh sách máy: " << endl;
+    cout << "┌─────────────────────────────────────────────────────────────────┐" << endl
+         << "│                      Danh sách máy tính                         │" << endl
+         << "├────────┬──────────┬────────────┬────────────┬───────────────────┤" << endl
+         << "│   ID   |   Giá    | Trạng thái |    Loại    | Thời gian sử dụng |" << endl
+         << "├────────┼──────────┼────────────┼────────────┼───────────────────┤" << endl;
     Computer computer;
     fstream file("./computer/listComputer.txt", ios::in);
     while (getObjectFromFile(file, computer))
     {
-        cout << computer.getId() << "|" << computer.getCost() << "|" << computer.getStatus() << "|" << computer.getType() << "|" << computer.getTotaltime() << endl;
+        cout << "│ " << setw(7) << left << computer.getName() << "| ";
+        cout << setw(9) << left << computer.getCost() << "| ";
+        cout << setw(11) << left << computer.getStatus() << "| ";
+        cout << setw(11) << left << computer.getType() << "| ";
+        cout << setw(18) << left << computer.getTotaltime() << "|" << endl;
     }
+    cout << "└────────┴──────────┴────────────┴────────────┴───────────────────┘" << endl;
     file.close();
 }
 

@@ -5,9 +5,9 @@
 #include "dish.h"
 #include "customer.h"
 #include "computer.h"
-#include <iomanip>
 
-class Admin :  public Staff{
+class Admin : public Staff
+{
 public:
     void addStaff(Staff staff);
     void deleteStaff(Staff staff);
@@ -17,8 +17,8 @@ public:
 
     void addDish(Dish dish);
     void seenDish(Dish dish);
-    void changeCost(Dish dish);
-    void addQuanlity(Dish dish);
+    void changeCost(Dish &dish);
+    void addQuanlity(Dish &dish);
     void deleteDish(Dish dish);
     void seenListDish();
 
@@ -33,8 +33,5 @@ public:
     void seenListComputer();
 };
 /*------------------------------------Other------------------------------------*/
-
-
-
 
 #endif

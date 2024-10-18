@@ -10,7 +10,7 @@ private:
     string sdt;
     string name;
 
-public:    
+public:
     ~Staff();
     string getId();
     string getSdt();
@@ -19,14 +19,9 @@ public:
     void setId(string);
     void setSdt(string);
     void setName(string);
-
-    
-    friend void updateStaffToFile(Staff staff);
 };
 /*------------------------------------Friend------------------------------------*/
-void updateStaffToFile(Staff staff);
+
 /*------------------------------------Other------------------------------------*/
-
-
 
 #endif

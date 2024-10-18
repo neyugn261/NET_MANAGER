@@ -15,36 +15,11 @@ void Customer::setContribute(string contribute) { this->contribute = contribute;
 
 /*------------------------------------Friend------------------------------------*/
 
-bool checkCustomer(Customer &customer)
-{
-    string filename = "./customer/listCustomer.txt";
-    fstream file(filename, ios::in);
-    if (!file.is_open())
-    {
-        cout << "Không thể mở file" << endl;
-        return false;
-    }
-
-    Customer temp;
-    while (getObjectFromFile(file, temp))
-    {
-        if (temp.getName() == customer.getName())
-        {
-            customer = temp;
-            file.close();
-            return true;
-        }
-    }
-
-    file.close();
-    return false;
-}
-
 bool operator>>(istream &in, Customer &customer)
 {
     cout << "Nhập tên khách hàng: ";
     in >> customer.name;
-    if (checkCustomer(customer))
+    if (checkObject(customer))
     {
         cout << "Khách hàng đã tồn tại!" << endl;
         return false;
@@ -72,5 +47,3 @@ bool operator>>(istream &in, Customer &customer)
 }
 
 /*------------------------------------Other------------------------------------*/
-
-
