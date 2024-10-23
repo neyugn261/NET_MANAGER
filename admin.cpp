@@ -508,20 +508,7 @@ void Admin::seenListDish()
 
     int max = maxLengthName + maxLengthPrice + maxLengthUnit + maxLengthResidual + 20;
 
-    // Gotoxy(max +5, 0);
-    // cout<<"maxLengName: "<<maxLengthName;
-    // Gotoxy(max +5, 1);
-    // cout<<"maxLengPrice: "<<maxLengthPrice;
-    // Gotoxy(max +5, 2);
-    // cout<<"maxLengUnit: "<<maxLengthUnit;
-    // Gotoxy(max +5, 3);
-    // cout<<"maxLengResidual: "<<maxLengthResidual;
-    // Gotoxy(max +5, 4);
-    // cout<<"max: "<<max;
-    // ╔
-    // ═
-    // ║
-    // ╠
+   
     Gotoxy(0, 0);
     cout << "╔";
     for (int i = 0; i < max - 2; i++)
@@ -610,27 +597,117 @@ void Admin::seenListDish()
     Gotoxy((7 * 2 + maxLengthName * 2 + maxLengthPrice * 2 + maxLengthUnit * 2 + maxLengthResidual + 3 * 7 - 8 + 1) / 2, 3);
     cout << "Số lượng";
 
+    file.close();
+
     fstream file1("./dish/listDish.txt", ios::in);
 
-    int y = 5;
+    vector<Dish> listDish;
     while (getObjectFromFile(file1, dish))
     {
+        listDish.push_back(dish);
+    }
+    file1.close();
+
+    writeListDish(listDish, maxLengthName, maxLengthPrice, maxLengthUnit, maxLengthResidual);
+
+    int selectOption = 1;
+    while (true)
+    {
+        menuMain(getMenuOptionCount("SORTDISH"), max + 3, 0);
+        showMenu("SORTDISH", selectOption, max + 4, 3);
+        Gotoxy((2 * max + 34 - 17 + 1) / 2, 1);
+        cout << "Sắp xếp thực phẩm";
+        int key = _getch();
+        switch (key)
+        {
+        case KEY_UP:
+            selectOption = (selectOption == 1) ? getMenuOptionCount("SORTDISH") : selectOption - 1;
+            break;
+        case KEY_DOWN:
+            selectOption = (selectOption == getMenuOptionCount("SORTDISH")) ? 1 : selectOption + 1;
+            break;
+        case KEY_ENTER:
+            switch (selectOption)
+            {
+            case 1:
+                sortDishId(listDish, max + 36);
+                break;
+            case 2:
+               // sortDishCost(listDish);
+                break;
+            case 3:
+               // sortDishQuanlity(listDish);
+                break;
+            case 4:
+                return;
+            }
+        }
+        writeListDish(listDish, maxLengthName, maxLengthPrice, maxLengthUnit, maxLengthResidual);
+    }
+
+    
+}
+
+void sortDishId(vector<Dish> &listDish, int x)
+{
+    menuSelectTypeSort(x, 2);
+    int selectOption = 1;
+    while (true)
+    {
+        showMenu("TYPESORT", selectOption, x + 4, 3);
+        int key = _getch();
+        switch (key)
+        {
+        case KEY_UP:
+            selectOption = (selectOption == 1) ? getMenuOptionCount("TYPESORT") : selectOption - 1;
+            break;
+        case KEY_DOWN:
+            selectOption = (selectOption == getMenuOptionCount("TYPESORT")) ? 1 : selectOption + 1;
+            break;
+        case KEY_ENTER:
+            switch (selectOption)
+            {
+            case 1:
+                quickSortDish(listDish, 0, listDish.size() - 1, compareByDishAsc, "ID");
+                ClearLine(x, 2, 16);
+                ClearLine(x, 3, 16);
+                ClearLine(x, 4, 16);
+                ClearLine(x, 5, 16);
+                return;
+            case 2:
+                quickSortDish(listDish, 0, listDish.size() - 1, compareByDishDesc, "ID");
+                ClearLine(x, 2, 16);
+                ClearLine(x, 3, 16);
+                ClearLine(x, 4, 16);
+                ClearLine(x, 5, 16);                
+                return;            
+            }
+        }
+    }
+}
+
+void writeListDish(vector<Dish> &listDish, int maxLengthName, int maxLengthPrice, int maxLengthUnit, int maxLengthResidual)
+{
+    int y = 5;
+    for (auto &dish : listDish)
+    {   
+        ClearLine(2, y, 4);
         Gotoxy(2, y);
         cout << dish.getId();
+        ClearLine(7 + 2, y, maxLengthName);
         Gotoxy(7 + 2, y);
         cout << dish.getName();
+        ClearLine(7 + 3 + maxLengthName + 2, y, maxLengthPrice);
         Gotoxy(7 + 3 + maxLengthName + 2, y);
         cout << dish.getPrice();
+        ClearLine(7 + 3 * 2 + maxLengthName + maxLengthPrice + 2, y, maxLengthUnit);
         Gotoxy(7 + 3 * 2 + maxLengthName + maxLengthPrice + 2, y);
         cout << dish.getUnit();
+        ClearLine(7 + 3 * 3 + maxLengthName + maxLengthPrice + maxLengthUnit + 2, y, maxLengthResidual);
         Gotoxy(7 + 3 * 3 + maxLengthName + maxLengthPrice + maxLengthUnit + 2, y);
         cout << dish.getResidual();
         y++;
     }
-
-    file.close();
-    Gotoxy(0, y + 1);
-    pressEnter();
 }
 
 void Admin::addCustomer(Customer customer)

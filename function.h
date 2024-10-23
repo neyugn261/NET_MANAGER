@@ -9,6 +9,8 @@
 #include <iomanip>
 #include <string>
 #include <algorithm>
+#include <vector>
+#include <ctime>
 #include "admin.h"
 
 using namespace std;
@@ -42,47 +44,48 @@ void optionMenu(string typeMenu, int option);
 void printMenuOption(string typeMenu, int option, bool isSelected);
 int getMenuOptionCount(const string &typeMenu);
 void showMenu(string typeMenu, int selectOption, int x, int y);
+
 void menuMain(int count, int x, int y);
 void menuAdd(int x, int y);
+void menuSelectTypeSort(int x, int y);
 /*------------------------------------MenusAdmin------------------------------------*/
-void menuAdmin(Admin admin); 
+void menuAdmin(Admin admin);
 
-void manageComputer(Admin admin);        
-/**/ void menuAddComputer(Admin admin);  
-/**/ /**/ void addComputer(Admin admin); 
+void manageComputer(Admin admin);
+/**/ void menuAddComputer(Admin admin);
+/**/ /**/ void addComputer(Admin admin);
 /**/ void findComputer(Admin admin);
 /**/ /**/ void changeComputer(Admin admin, Computer &computer);
-/**/ /**/ /**/ //admin.changeCost(computer);
-/**/ /**/ /**/ //admin.deleteComputer(computer);
-/**/ //admin.seenListComputer();
+/**/ /**/ /**/ // admin.changeCost(computer);
+/**/ /**/ /**/ // admin.deleteComputer(computer);
+/**/           // admin.seenListComputer();
 
-void manageStaff(Admin admin);        
-/**/ void menuAddStaff(Admin admin);  
-/**/ /**/ void addStaff(Admin admin); 
+void manageStaff(Admin admin);
+/**/ void menuAddStaff(Admin admin);
+/**/ /**/ void addStaff(Admin admin);
 /**/ void findStaff(Admin admin);
 /**/ /**/ void changeStaff(Admin admin, Staff &staff);
-/**/ /**/ /**/ //admin.changeSPassword(staff);
-/**/ /**/ /**/ //admin.deleteStaff(staff);
-/**/ //admin.seenListStaff();
+/**/ /**/ /**/ // admin.changeSPassword(staff);
+/**/ /**/ /**/ // admin.deleteStaff(staff);
+/**/           // admin.seenListStaff();
 
-void manageCustomer(Admin admin);                                   
-/**/ void menuAddCustomer(Admin admin);                             
-/**/ /**/ void addCustomer(Admin admin);                            
-/**/ void findCustomer(Admin admin);                                
-/**/ /**/ void changeCustomer(Admin admin, Customer &customer);     
-/**/ /**/ /**/ //admin.deleteCustomer(customer);                    
-/**/ //admin.seenListCustomer();
+void manageCustomer(Admin admin);
+/**/ void menuAddCustomer(Admin admin);
+/**/ /**/ void addCustomer(Admin admin);
+/**/ void findCustomer(Admin admin);
+/**/ /**/ void changeCustomer(Admin admin, Customer &customer);
+/**/ /**/ /**/ // admin.deleteCustomer(customer);
+/**/           // admin.seenListCustomer();
 
-
-void manageDish(Admin admin);                             
-/**/ void menuAddDish(Admin admin);                       
-/**/ /**/ void addDish(Admin admin);                      
-/**/ void findDish(Admin admin);                          
-/**/ /**/ void changeDish(Admin admin, Dish &dish);       
-/**/ /**/ /**/ //admin.changeCost(dish);                  
-/**/ /**/ /**/ //admin.addQuanlity(dish);                 
-/**/ /**/ /**/  //admin.deleteDish(dish);                 
-/**/ //admin.seenListDish();
+void manageDish(Admin admin);
+/**/ void menuAddDish(Admin admin);
+/**/ /**/ void addDish(Admin admin);
+/**/ void findDish(Admin admin);
+/**/ /**/ void changeDish(Admin admin, Dish &dish);
+/**/ /**/ /**/ // admin.changeCost(dish);
+/**/ /**/ /**/ // admin.addQuanlity(dish);
+/**/ /**/ /**/ // admin.deleteDish(dish);
+/**/           // admin.seenListDish();
 
 void historyA(Admin admin); // cl
 
@@ -119,5 +122,11 @@ bool checkNameObject(T &object);
 
 bool checkAname(string aname);
 bool checkAnameStaff(Staff &staff);
+
+
+bool compareByDishAsc(Dish object1, Dish object2, string type);
+bool compareByDishDesc(Dish object1, Dish object2, string type);
+void swapDish(Dish &object1, Dish &object2);
+void quickSortDish(vector<Dish> &list, int left, int right, bool (*compare)(Dish , Dish , string), string type);
 
 #endif

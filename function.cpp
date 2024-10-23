@@ -470,6 +470,36 @@ void optionMenu(string typeMenu, int option)
             break;
         }
     }
+    else if (typeMenu == "TYPESORT")
+    {
+        switch (option)
+        {
+        case 1:
+            cout << " Tăng dần ";
+            break;
+        case 2:
+            cout << " Giảm dần ";
+            break;
+        }
+    }
+    else if (typeMenu =="SORTDISH")
+    {
+        switch (option)
+        {
+        case 1:
+            cout << " 1. Sắp xếp theo ID           ";
+            break;
+        case 2:
+            cout << " 2. Sắp xếp theo giá          ";
+            break;
+        case 3:
+            cout << " 3. Sắp xếp theo số lượng     ";
+            break;
+        case 4:
+            cout << " 4. Thoát                     ";
+            break;
+        }
+    }
 
     else
     {
@@ -515,6 +545,10 @@ int getMenuOptionCount(const string &typeMenu)
         return 5;
     if (typeMenu == "CHANGECOMPUTER")
         return 3;
+    if (typeMenu == "TYPESORT")
+        return 2;
+    if (typeMenu == "SORTDISH")
+        return 4;
 
     // Các loại menu khác...
 
@@ -543,13 +577,14 @@ void menuMain(int n, int x, int y)
     Gotoxy(x, y + 1);
     cout << "║                              ║";
     Gotoxy(x, y + 2);
-    cout << "╠══════════════════════════════╣";
-    Gotoxy(x, y + 3);
+    cout << "╠══════════════════════════════╣";   
     for (int i = 0; i < n; i++)
-    {
-        cout << "║                              ║" << endl;
+    {   
+        Gotoxy(x, y + 3 + i);
+        cout << "║                              ║" ;
     }
-    cout << "╚══════════════════════════════╝" << endl;
+    Gotoxy(x, y + 3 + n);
+    cout << "╚══════════════════════════════╝" ;
 }
 
 void menuAdd(int x, int y)
@@ -568,6 +603,17 @@ void menuAdd(int x, int y)
     cout << "╚════════════════╝" << endl;
 }
 
+void menuSelectTypeSort(int x, int y)
+{
+    Gotoxy(x, y);
+    cout << "   ┌──────────┐";
+    Gotoxy(x, y + 1);
+    cout << "❯❯ │          │";
+    Gotoxy(x, y + 2);
+    cout << "❯❯ │          │";
+    Gotoxy(x, y + 3);
+    cout << "   └──────────┘";
+}
 /*------------------------------------MenusAdmin------------------------------------*/
 
 // Menu chính dành cho admin
@@ -2243,3 +2289,71 @@ bool checkAnameStaff(Staff &staff)
     file.close();
     return false;
 }
+
+bool compareByDishAsc(Dish object1, Dish object2, string type)
+{
+
+    if (type == "PRICE")
+    {
+        return object1.getPrice() < object2.getPrice();
+    }
+    else if (type == "RESIDUAL")
+    {
+        return object1.getResidual() < object2.getResidual();
+    }
+    else
+    {
+        return object1.getId() < object2.getId();
+    }
+}
+bool compareByDishDesc(Dish object1, Dish object2, string type)
+{
+    if (type == "PRICE")
+    {
+        return object1.getPrice() > object2.getPrice();
+    }
+    else if (type == "RESIDUAL")
+    {
+        return object1.getResidual() > object2.getResidual();
+    }
+    else
+    {
+        return object1.getId() > object2.getId();
+    }
+}
+
+void swapDish(Dish &a, Dish &b)
+{
+    Dish temp = a;
+    a = b;
+    b = temp;
+}
+
+void quickSortDish(vector<Dish> &list, int left, int right, bool (*compare)(Dish , Dish , string), string type)
+{
+    if (left < right)
+    {
+        srand(time(NULL));
+        int pivot = left + rand() % (right - left + 1);
+        int i = left - 1;
+        int j = right + 1;
+        while (true)
+        {
+            do
+            {
+                i++;
+            } while (compare(list[i], list[pivot], type));
+            do
+            {
+                j--;
+            } while (compare(list[pivot], list[j], type));
+            if (i >= j)
+                break;
+            swapDish(list[i], list[j]);
+        }
+        quickSortDish(list, left, j, compare, type);
+        quickSortDish(list, j + 1, right, compare, type);
+    }
+}
+
+
