@@ -40,10 +40,7 @@ bool Account::login()
     }
     system("cls");
     cout << "Đã nhập sai quá 3 lần!" << endl;
-    cout << "\n(Nhấn ENTER để thoát)";
-    while (_getch() != KEY_ENTER)
-    {
-    }
+    pressEnter();
     system("cls");
     return false;
 }
@@ -67,7 +64,7 @@ bool checkAccount(Account &account)
 
         if (temp.aname == account.aname && temp.password == account.password)
         {
-            account.role = temp.role;
+            account = temp;
             file.close();
             return true;
         }
@@ -95,14 +92,14 @@ istream &operator>>(istream &in, Account &account)
          << "╚════════════════════════════════╝" << endl;
 
     Gotoxy(4, 5);
-    in >> account.aname;
+    EnterString(account.aname, 26);
     Gotoxy(4, 9);
-    enterpassword(account.password);
+    enterpassword(account.password, 26);
 
     return in;
 }
 /*------------------------------------Other------------------------------------*/
-void enterpassword(string &password)
+void enterpassword(string &password,int n)
 {
     password.clear();
     char ch;
@@ -110,13 +107,20 @@ void enterpassword(string &password)
     {
         ch = getch();
         if (ch == KEY_ENTER)
-            break;
+            if (password.empty())
+            {
+                //
+            }
+            else
+            {
+                break;
+            }
         else if (ch == KEY_BACKSPACE && !password.empty())
         {
             cout << "\b \b";
             password.pop_back();
         }
-        else if (ch != KEY_BACKSPACE)
+        else if (ch != KEY_BACKSPACE && password.length() < n)
         {
             password += ch;
             cout << "•";

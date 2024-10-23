@@ -28,45 +28,61 @@ void pressEnter();
 void ClearLine(SHORT posY);
 void ClearLine(SHORT posX, SHORT posY, int length);
 void printSpace(int length);
+void EnterNumber(string &x, int max, int min);
+void EnterNumber(string &x, int n);
+void EnterString(string &x, int n);
+void EnterLetter(string &x, int n);
+
+void toName(string &str);
+void trim(string &str);
+void toLower(string &str);
 
 /*------------------------------------MENU------------------------------------*/
 void optionMenu(string typeMenu, int option);
 void printMenuOption(string typeMenu, int option, bool isSelected);
 int getMenuOptionCount(const string &typeMenu);
-void showMenu(string typeMenu, int selectOption);
-
+void showMenu(string typeMenu, int selectOption, int x, int y);
+void menuMain(int count, int x, int y);
+void menuAdd(int x, int y);
 /*------------------------------------MenusAdmin------------------------------------*/
-void menuAdmin(Admin admin);
+void menuAdmin(Admin admin); 
 
-void manageComputer(Admin admin);
-/**/ void addComputer(Admin admin);
-/**/ void seenComputer(Admin admin); // xong
-/**/ /**/ void in4Computer(Admin admin, Computer computer);
-/**/ /**/ void changeCost(Admin admin, Computer computer);
-/**/ /**/ void deleteComputer(Admin admin, Computer computer);
-/**/ void seenListComputer(Admin admin);//
+void manageComputer(Admin admin);        
+/**/ void menuAddComputer(Admin admin);  
+/**/ /**/ void addComputer(Admin admin); 
+/**/ void findComputer(Admin admin);
+/**/ /**/ void changeComputer(Admin admin, Computer &computer);
+/**/ /**/ /**/ //admin.changeCost(computer);
+/**/ /**/ /**/ //admin.deleteComputer(computer);
+/**/ //admin.seenListComputer();
 
-void manageCustomer(Admin admin);
-/**/ void addCustomer(Admin admin);
-/**/ void deleteCustomer(Admin admin);
-/**/ void seenListCustomer(Admin admin);//
+void manageStaff(Admin admin);        
+/**/ void menuAddStaff(Admin admin);  
+/**/ /**/ void addStaff(Admin admin); 
+/**/ void findStaff(Admin admin);
+/**/ /**/ void changeStaff(Admin admin, Staff &staff);
+/**/ /**/ /**/ //admin.changeSPassword(staff);
+/**/ /**/ /**/ //admin.deleteStaff(staff);
+/**/ //admin.seenListStaff();
 
-void manageStaff(Admin admin);
-/**/ void addStaff(Admin admin);
-/**/ void seenstaff(Admin admin); // xong
-/**/ /**/ void in4Staff(Admin admin, Staff staff);
-/**/ /**/ void deleteStaff(Admin admin, Staff staff);
-/**/ /**/ void changeSPassword(Admin admin, Staff staff);
-/**/ void seenListStaff(Admin admin);//
+void manageCustomer(Admin admin);                                   
+/**/ void menuAddCustomer(Admin admin);                             
+/**/ /**/ void addCustomer(Admin admin);                            
+/**/ void findCustomer(Admin admin);                                
+/**/ /**/ void changeCustomer(Admin admin, Customer &customer);     
+/**/ /**/ /**/ //admin.deleteCustomer(customer);                    
+/**/ //admin.seenListCustomer();
 
-void manageDish(Admin admin);
-/**/ void addDish(Admin admin);    // xong
-/**/ void changeDish(Admin admin); // xong
-/**/ /**/ void in4Dish(Admin admin, Dish dish);
-/**/ /**/ void changeCost(Admin admin, Dish &dish);
-/**/ /**/ void addQuanlity(Admin admin, Dish &dish);
-/**/ /**/ void deleteDish(Admin admin, Dish dish);
-/**/ void seenListDish(Admin admin); // nên thêm sắp xếp
+
+void manageDish(Admin admin);                             
+/**/ void menuAddDish(Admin admin);                       
+/**/ /**/ void addDish(Admin admin);                      
+/**/ void findDish(Admin admin);                          
+/**/ /**/ void changeDish(Admin admin, Dish &dish);       
+/**/ /**/ /**/ //admin.changeCost(dish);                  
+/**/ /**/ /**/ //admin.addQuanlity(dish);                 
+/**/ /**/ /**/  //admin.deleteDish(dish);                 
+/**/ //admin.seenListDish();
 
 void historyA(Admin admin); // cl
 
@@ -81,6 +97,7 @@ void seenCustomer(Staff staff);   // cl
 /*------------------------------------Other------------------------------------*/
 bool dataOfEmptyId(fstream &file, int &count);
 
+void updateAdminToFile(Admin admin);
 void updateStaffToFile(Staff staff);
 void updateDishToFile(Dish dish);
 void updateCustomerToFile(Customer customer);
@@ -95,6 +112,12 @@ template <class T>
 bool getObjectFromFile(fstream &file, T &object);
 
 template <class T>
-bool checkObject(T &object);
+bool checkIdObject(T &object);
+
+template <class T>
+bool checkNameObject(T &object);
+
+bool checkAname(string aname);
+bool checkAnameStaff(Staff &staff);
 
 #endif

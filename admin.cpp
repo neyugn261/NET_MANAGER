@@ -6,8 +6,8 @@ void Admin::addStaff(Staff staff)
     // thay đổi trên listStaff.txt
     fstream file("./account/listStaff.txt", ios::app);
     if (file.is_open())
-    { // id|aname|pass|role|status|name|sdt
-        file << staff.getId() << "|" << staff.getAname() << "|" << staff.getPass() << "|" << staff.getRole() << "|" << staff.getStatus() << "|" << staff.getName() << "|" << staff.getSdt() << endl;
+    { // id|aname|pass|role|status|name|sdt|revenue
+        file << staff.getId() << "|" << staff.getAname() << "|" << staff.getPass() << "|" << staff.getRole() << "|" << staff.getStatus() << "|" << staff.getName() << "|" << staff.getSdt() << "|" << staff.getRevenue() << endl;
         file.close();
     }
     else
@@ -26,8 +26,6 @@ void Admin::addStaff(Staff staff)
     {
         cout << "Không thể mở file" << endl;
     }
-
-    cout << "Thêm nhân viên thành công với ID là: " << staff.getId() << endl;
 }
 
 void Admin::deleteStaff(Staff staff)
@@ -111,51 +109,248 @@ void Admin::deleteStaff(Staff staff)
     temp1.close();
     system("del .\\account\\listAccount.txt");
     system("ren .\\account\\temp1.txt listAccount.txt");
-
-    cout << "Xóa nhân viên thành công" << endl;
 }
 
-void Admin::seenStaff(Staff staff)
-{
-    cout << "ID: " << staff.getId() << endl;
-    cout << "Tên tài khoản: " << staff.getAname() << endl;
-    cout << "Mật khẩu: " << staff.getPass() << endl;
-    cout << "Tên: " << staff.getName() << endl;
-    cout << "Số điện thoại: " << staff.getSdt() << endl;
-    cout << "Trạng thái: " << staff.getStatus() << endl;
-}
-
-void Admin::changeSPassword(Staff staff)
+void Admin::changeSPassword(Staff &staff)
 {
     string pass;
-    cout << "Nhập mật khẩu mới: ";
-    cin >> pass;
+    ClearLine(54, 6, staff.getPass().length());
+
+    Gotoxy(54, 6);
+    ShowCursor(true);
+
+    EnterString(pass, 20);
+
+    ShowCursor(false);
     staff.setPass(pass);
+    Sleep(200);
+    Gotoxy(40, 10); //
+    cout << "Đổi mật khẩu thành công";
+    Sleep(700);
+    ClearLine(40, 10, 23);
     updateStaffToFile(staff);
-    cout << "Đổi mật khẩu thành công" << endl;
+    checkIdObject(staff);
 }
 
 void Admin::seenListStaff()
 {
+    system("cls");
     Staff staff;
     fstream file("./account/listStaff.txt", ios::in);
-    cout << "┌───────────────────────────────────────────────────────────────────────────────────────────────┐" << endl
-         << "│                                        Danh sách nhân viên                                    │" << endl
-         << "├────────┬─────────────────────┬───────────────┬────────────┬────────────────────┬──────────────┤" << endl
-         << "│   ID   │     Họ và tên       │ Số điện thoại │ Trạng thái │      Tài khoản     │   Mật khẩu   │" << endl
-         << "├────────┼─────────────────────┼───────────────┼────────────┼────────────────────┼──────────────┤" << endl;
+
+    int maxLengthName = 0;
+    int maxLengthSdt = 0;
+    int maxLengthStatus = 0;
+    int maxLengthRevenue = 0;
+    int maxLengthAname = 0;
+    int maxLengthPass = 0;
+    int count = 0;
 
     while (getObjectFromFile(file, staff))
     {
-        cout << "│ " << setw(7) << left << staff.getId() << "│ ";
-        cout << setw(20) << left << staff.getName() << "│ ";
-        cout << setw(14) << left << staff.getSdt() << "│ ";
-        cout << setw(11) << left << staff.getStatus() << "│ ";
-        cout << setw(19) << left << staff.getAname() << "│ ";
-        cout << setw(13) << left << staff.getPass() << "│" << endl;
+        if (staff.getName().length() > maxLengthName)
+        {
+            maxLengthName = staff.getName().length();
+        }
+        if (staff.getSdt().length() > maxLengthSdt)
+        {
+            maxLengthSdt = staff.getSdt().length();
+        }
+        if (staff.getStatus().length() > maxLengthStatus)
+        {
+            maxLengthStatus = staff.getStatus().length();
+        }
+        if (staff.getRevenue().length() > maxLengthRevenue)
+        {
+            maxLengthRevenue = staff.getRevenue().length();
+        }
+        if (staff.getAname().length() > maxLengthAname)
+        {
+            maxLengthAname = staff.getAname().length();
+        }
+        if (staff.getPass().length() > maxLengthPass)
+        {
+            maxLengthPass = staff.getPass().length();
+        }
+        count++;
     }
-    cout << "└────────┴─────────────────────┴───────────────┴────────────┴────────────────────┴──────────────┘" << endl;
+
     file.close();
+
+    if (maxLengthName < 6)
+    {
+        maxLengthName = 6;
+    }
+    if (maxLengthSdt < 3)
+    {
+        maxLengthSdt = 3;
+    }
+    if (maxLengthStatus < 10)
+    {
+        maxLengthStatus = 10;
+    }
+    if (maxLengthRevenue < 9)
+    {
+        maxLengthRevenue = 9;
+    }
+    if (maxLengthAname < 9)
+    {
+        maxLengthAname = 9;
+    }
+    if (maxLengthPass < 8)
+    {
+        maxLengthPass = 8;
+    }
+
+    int max = maxLengthName + maxLengthSdt + maxLengthStatus + maxLengthRevenue + maxLengthAname + maxLengthPass + 26;
+
+    Gotoxy(0, 0);
+    cout << "╔";
+    for (int i = 0; i < max - 2; i++)
+        cout << "═";
+    cout << "╗" << endl;
+    cout << "║";
+    for (int i = 0; i < max - 2; i++)
+        cout << " ";
+    cout << "║" << endl;
+    cout << "╠══════╦";
+    for (int i = 0; i < maxLengthName + 2; i++)
+        cout << "═";
+    cout << "╦";
+    for (int i = 0; i < maxLengthSdt + 2; i++)
+        cout << "═";
+    cout << "╦";
+    for (int i = 0; i < maxLengthStatus + 2; i++)
+        cout << "═";
+    cout << "╦";
+    for (int i = 0; i < maxLengthRevenue + 2; i++)
+        cout << "═";
+    cout << "╦";
+    for (int i = 0; i < maxLengthAname + 2; i++)
+        cout << "═";
+    cout << "╦";
+    for (int i = 0; i < maxLengthPass + 2; i++)
+        cout << "═";
+    cout << "╣" << endl;
+    cout << "║  STT ║";
+    for (int i = 0; i < maxLengthName + 2; i++)
+        cout << " ";
+    cout << "║";
+    for (int i = 0; i < maxLengthSdt + 2; i++)
+        cout << " ";
+    cout << "║";
+    for (int i = 0; i < maxLengthStatus + 2; i++)
+        cout << " ";
+    cout << "║";
+    for (int i = 0; i < maxLengthRevenue + 2; i++)
+        cout << " ";
+    cout << "║";
+    for (int i = 0; i < maxLengthAname + 2; i++)
+        cout << " ";
+    cout << "║";
+    for (int i = 0; i < maxLengthPass + 2; i++)
+        cout << " ";
+    cout << "║" << endl;
+    cout << "╠══════╬";
+    for (int i = 0; i < maxLengthName + 2; i++)
+        cout << "═";
+    cout << "╬";
+    for (int i = 0; i < maxLengthSdt + 2; i++)
+        cout << "═";
+    cout << "╬";
+    for (int i = 0; i < maxLengthStatus + 2; i++)
+        cout << "═";
+    cout << "╬";
+    for (int i = 0; i < maxLengthRevenue + 2; i++)
+        cout << "═";
+    cout << "╬";
+    for (int i = 0; i < maxLengthAname + 2; i++)
+        cout << "═";
+    cout << "╬";
+    for (int i = 0; i < maxLengthPass + 2; i++)
+        cout << "═";
+    cout << "╣" << endl;
+    for (int i = 0; i < count; i++)
+    {
+        cout << "║      ║";
+        for (int i = 0; i < maxLengthName + 2; i++)
+            cout << " ";
+        cout << "║";
+        for (int i = 0; i < maxLengthSdt + 2; i++)
+            cout << " ";
+        cout << "║";
+        for (int i = 0; i < maxLengthStatus + 2; i++)
+            cout << " ";
+        cout << "║";
+        for (int i = 0; i < maxLengthRevenue + 2; i++)
+            cout << " ";
+        cout << "║";
+        for (int i = 0; i < maxLengthAname + 2; i++)
+            cout << " ";
+        cout << "║";
+        for (int i = 0; i < maxLengthPass + 2; i++)
+            cout << " ";
+        cout << "║" << endl;
+    }
+    cout << "╚══════╩";
+    for (int i = 0; i < maxLengthName + 2; i++)
+        cout << "═";
+    cout << "╩";
+    for (int i = 0; i < maxLengthSdt + 2; i++)
+        cout << "═";
+    cout << "╩";
+    for (int i = 0; i < maxLengthStatus + 2; i++)
+        cout << "═";
+    cout << "╩";
+    for (int i = 0; i < maxLengthRevenue + 2; i++)
+        cout << "═";
+    cout << "╩";
+    for (int i = 0; i < maxLengthAname + 2; i++)
+        cout << "═";
+    cout << "╩";
+    for (int i = 0; i < maxLengthPass + 2; i++)
+        cout << "═";
+    cout << "╝" << endl;
+    Gotoxy((max - 19 + 1) / 2, 1);
+    cout << "Danh sách nhân viên";
+    Gotoxy((7 * 2 + maxLengthName + 3 - 6 + 1) / 2, 3);
+    cout << "Họ tên";
+    Gotoxy((7 * 2 + maxLengthName * 2 + maxLengthSdt + 3 * 3 - 3 + 1) / 2, 3);
+    cout << "Sđt";
+    Gotoxy((7 * 2 + maxLengthName * 2 + maxLengthSdt * 2 + maxLengthStatus + 3 * 5 - 10 + 1) / 2, 3);
+    cout << "Trạng thái";
+    Gotoxy((7 * 2 + maxLengthName * 2 + maxLengthSdt * 2 + maxLengthStatus * 2 + maxLengthRevenue + 3 * 7 - 10 + 1) / 2, 3);
+    cout << "Doanh thu";
+    Gotoxy((7 * 2 + maxLengthName * 2 + maxLengthSdt * 2 + maxLengthStatus * 2 + maxLengthRevenue * 2 + maxLengthAname + 3 * 9 - 9 + 1) / 2, 3);
+    cout << "Tài khoản";
+    Gotoxy((7 * 2 + maxLengthName * 2 + maxLengthSdt * 2 + maxLengthStatus * 2 + maxLengthRevenue * 2 + maxLengthAname * 2 + maxLengthPass + 3 * 11 - 8 + 1) / 2, 3);
+    cout << "Mật khẩu";
+
+    fstream file1("./account/listStaff.txt", ios::in);
+
+    int y = 5;
+    while (getObjectFromFile(file1, staff))
+    {
+        Gotoxy(2, y);
+        cout << staff.getId();
+        Gotoxy(7 + 2, y);
+        cout << staff.getName();
+        Gotoxy(7 + 3 + maxLengthName + 2, y);
+        cout << staff.getSdt();
+        Gotoxy(7 + 3 * 2 + maxLengthName + maxLengthSdt + 2, y);
+        cout << staff.getStatus();
+        Gotoxy(7 + 3 * 3 + maxLengthName + maxLengthSdt + maxLengthStatus + 2, y);
+        cout << staff.getRevenue();
+        Gotoxy(7 + 3 * 4 + maxLengthName + maxLengthSdt + maxLengthStatus + maxLengthRevenue + 2, y);
+        cout << staff.getAname();
+        Gotoxy(7 + 3 * 5 + maxLengthName + maxLengthSdt + maxLengthStatus + maxLengthRevenue + maxLengthAname + 2, y);
+        cout << staff.getPass();
+        y++;
+    }
+
+    file1.close();
+    Gotoxy(0, y + 1);
+    pressEnter();
 }
 
 void Admin::addDish(Dish dish)
@@ -172,15 +367,6 @@ void Admin::addDish(Dish dish)
     }
 }
 
-void Admin::seenDish(Dish dish)
-{
-    cout << "ID: " << dish.getId() << endl;
-    cout << "Tên món ăn: " << dish.getName() << endl;
-    cout << "Giá: " << dish.getPrice() << endl;
-    cout << "Đơn vị: " << dish.getUnit() << endl;
-    cout << "Tồn dư: " << dish.getResidual() << endl;
-}
-
 void Admin::changeCost(Dish &dish)
 {
     string price;
@@ -188,35 +374,39 @@ void Admin::changeCost(Dish &dish)
 
     Gotoxy(47, 4);
     ShowCursor(true);
-    cin >> price;
+
+    EnterNumber(price, 7, 4);
+
     ShowCursor(false);
     dish.setPrice(price);
     Sleep(200);
-    Gotoxy(42, 7);
+    Gotoxy(40, 7);
     cout << "Đổi giá thành công";
     Sleep(700);
-    ClearLine(42, 7, 23);
+    ClearLine(40, 7, 23);
     updateDishToFile(dish);
-    checkObject(dish);
+    checkIdObject(dish);
 }
 
 void Admin::addQuanlity(Dish &dish)
 {
     string quanlity;
-    ClearLine(52,5,dish.getResidual().length());
-    
+    ClearLine(52, 5, dish.getResidual().length());
+
     Gotoxy(52, 5);
     ShowCursor(true);
-    cin >> quanlity;
-    ShowCursor(false);    
+
+    EnterNumber(quanlity, 5);
+
+    ShowCursor(false);
     dish.setResidual(quanlity);
     Sleep(200);
-    Gotoxy(42, 7);
+    Gotoxy(40, 7);
     cout << "Đổi số lượng thành công";
     Sleep(700);
-    ClearLine(42, 7, 23);
+    ClearLine(40, 7, 23);
     updateDishToFile(dish);
-    checkObject(dish);
+    checkIdObject(dish);
 }
 
 void Admin::deleteDish(Dish dish)
@@ -262,31 +452,185 @@ void Admin::deleteDish(Dish dish)
     temp.close();
     system("del .\\dish\\listDish.txt");
     system("ren .\\dish\\temp.txt listDish.txt");
-
-    cout << "Xóa món ăn thành công" << endl;
 }
 
 void Admin::seenListDish()
 {
+    system("cls");
     Dish dish;
     fstream file("./dish/listDish.txt", ios::in);
-    cout << "┌──────────────────────────────────────────────────┐" << endl
-         << "│                 Danh sách món ăn                 │" << endl
-         << "├──────┬─────────────┬────────┬──────────┬─────────┤" << endl
-         << "│  ID  │ Tên món ăn  │  Giá   │  Đơn vị  │Số lượng │" << endl
-         << "├──────┼─────────────┼────────┼──────────┼─────────┤" << endl;
+
+    int maxLengthName = 0;
+    int maxLengthPrice = 0;
+    int maxLengthUnit = 0;
+    int maxLengthResidual = 0;
+    int count = 0;
 
     while (getObjectFromFile(file, dish))
     {
-        // tôi muốn canh lề trái
-        cout << "│ " << setw(5) << left << dish.getId() << "│ ";
-        cout << setw(12) << left << dish.getName() << "│ ";
-        cout << setw(7) << left << dish.getPrice() << "│ ";
-        cout << setw(9) << left << dish.getUnit() << "│ ";
-        cout << setw(8) << left << dish.getResidual() << "│" << endl;
+        if (dish.getName().length() > maxLengthName)
+        {
+            maxLengthName = dish.getName().length();
+        }
+        if (dish.getPrice().length() > maxLengthPrice)
+        {
+            maxLengthPrice = dish.getPrice().length();
+        }
+        if (dish.getUnit().length() > maxLengthUnit)
+        {
+            maxLengthUnit = dish.getUnit().length();
+        }
+        if (dish.getResidual().length() > maxLengthResidual)
+        {
+            maxLengthResidual = dish.getResidual().length();
+        }
+        count++;
     }
-    cout << "└──────┴─────────────┴────────┴──────────┴─────────┘" << endl;
+
     file.close();
+
+    if (maxLengthName < 12)
+    {
+        maxLengthName = 12;
+    }
+    if (maxLengthPrice < 3)
+    {
+        maxLengthPrice = 3;
+    }
+    if (maxLengthUnit < 6)
+    {
+        maxLengthUnit = 6;
+    }
+    if (maxLengthResidual < 8)
+    {
+        maxLengthResidual = 8;
+    }
+
+    int max = maxLengthName + maxLengthPrice + maxLengthUnit + maxLengthResidual + 20;
+
+    // Gotoxy(max +5, 0);
+    // cout<<"maxLengName: "<<maxLengthName;
+    // Gotoxy(max +5, 1);
+    // cout<<"maxLengPrice: "<<maxLengthPrice;
+    // Gotoxy(max +5, 2);
+    // cout<<"maxLengUnit: "<<maxLengthUnit;
+    // Gotoxy(max +5, 3);
+    // cout<<"maxLengResidual: "<<maxLengthResidual;
+    // Gotoxy(max +5, 4);
+    // cout<<"max: "<<max;
+    // ╔
+    // ═
+    // ║
+    // ╠
+    Gotoxy(0, 0);
+    cout << "╔";
+    for (int i = 0; i < max - 2; i++)
+        cout << "═";
+    cout << "╗" << endl;
+    cout << "║";
+    for (int i = 0; i < max - 2; i++)
+        cout << " ";
+    cout << "║" << endl;
+    cout << "╠══════╦";
+    for (int i = 0; i < maxLengthName + 2; i++)
+        cout << "═";
+    cout << "╦";
+    for (int i = 0; i < maxLengthPrice + 2; i++)
+        cout << "═";
+    cout << "╦";
+    for (int i = 0; i < maxLengthUnit + 2; i++)
+        cout << "═";
+    cout << "╦";
+    for (int i = 0; i < maxLengthResidual + 2; i++)
+        cout << "═";
+    cout << "╣" << endl;
+    cout << "║  STT ║";
+    for (int i = 0; i < maxLengthName + 2; i++)
+        cout << " ";
+    cout << "║";
+    for (int i = 0; i < maxLengthPrice + 2; i++)
+        cout << " ";
+    cout << "║";
+    for (int i = 0; i < maxLengthUnit + 2; i++)
+        cout << " ";
+    cout << "║";
+    for (int i = 0; i < maxLengthResidual + 2; i++)
+        cout << " ";
+    cout << "║" << endl;
+    cout << "╠══════╬";
+    for (int i = 0; i < maxLengthName + 2; i++)
+        cout << "═";
+    cout << "╬";
+    for (int i = 0; i < maxLengthPrice + 2; i++)
+        cout << "═";
+    cout << "╬";
+    for (int i = 0; i < maxLengthUnit + 2; i++)
+        cout << "═";
+    cout << "╬";
+    for (int i = 0; i < maxLengthResidual + 2; i++)
+        cout << "═";
+    cout << "╣" << endl;
+    for (int i = 0; i < count; i++)
+    {
+        cout << "║      ║";
+        for (int i = 0; i < maxLengthName + 2; i++)
+            cout << " ";
+        cout << "║";
+        for (int i = 0; i < maxLengthPrice + 2; i++)
+            cout << " ";
+        cout << "║";
+        for (int i = 0; i < maxLengthUnit + 2; i++)
+            cout << " ";
+        cout << "║";
+        for (int i = 0; i < maxLengthResidual + 2; i++)
+            cout << " ";
+        cout << "║" << endl;
+    }
+    cout << "╚══════╩";
+    for (int i = 0; i < maxLengthName + 2; i++)
+        cout << "═";
+    cout << "╩";
+    for (int i = 0; i < maxLengthPrice + 2; i++)
+        cout << "═";
+    cout << "╩";
+    for (int i = 0; i < maxLengthUnit + 2; i++)
+        cout << "═";
+    cout << "╩";
+    for (int i = 0; i < maxLengthResidual + 2; i++)
+        cout << "═";
+    cout << "╝" << endl;
+    Gotoxy((max - 19 + 1) / 2, 1);
+    cout << "Danh sách thực phẩm";
+    Gotoxy((7 * 2 + maxLengthName + 3 - 13 + 1) / 2, 3);
+    cout << "Tên thực phẩm";
+    Gotoxy((7 * 2 + maxLengthName * 2 + maxLengthPrice + 3 * 3 - 3 + 1) / 2, 3);
+    cout << "Giá";
+    Gotoxy((7 * 2 + maxLengthName * 2 + maxLengthPrice * 2 + maxLengthUnit + 3 * 5 - 6 + 1) / 2, 3);
+    cout << "Đơn vị";
+    Gotoxy((7 * 2 + maxLengthName * 2 + maxLengthPrice * 2 + maxLengthUnit * 2 + maxLengthResidual + 3 * 7 - 8 + 1) / 2, 3);
+    cout << "Số lượng";
+
+    fstream file1("./dish/listDish.txt", ios::in);
+
+    int y = 5;
+    while (getObjectFromFile(file1, dish))
+    {
+        Gotoxy(2, y);
+        cout << dish.getId();
+        Gotoxy(7 + 2, y);
+        cout << dish.getName();
+        Gotoxy(7 + 3 + maxLengthName + 2, y);
+        cout << dish.getPrice();
+        Gotoxy(7 + 3 * 2 + maxLengthName + maxLengthPrice + 2, y);
+        cout << dish.getUnit();
+        Gotoxy(7 + 3 * 3 + maxLengthName + maxLengthPrice + maxLengthUnit + 2, y);
+        cout << dish.getResidual();
+        y++;
+    }
+
+    file.close();
+    Gotoxy(0, y + 1);
+    pressEnter();
 }
 
 void Admin::addCustomer(Customer customer)
@@ -301,7 +645,6 @@ void Admin::addCustomer(Customer customer)
     {
         cout << "Không thể mở file" << endl;
     }
-    cout << "Thêm khách hàng thành công với ID là: " << customer.getId() << endl;
 }
 
 void Admin::deleteCustomer(Customer customer)
@@ -347,31 +690,171 @@ void Admin::deleteCustomer(Customer customer)
     temp.close();
     system("del .\\customer\\listCustomer.txt");
     system("ren .\\customer\\temp.txt listCustomer.txt");
-
-    cout << "Xóa khách hàng thành công" << endl;
 }
 
 void Admin::seenListCustomer()
 {
-
+    system("cls");
     Customer customer;
     fstream file("./customer/listCustomer.txt", ios::in);
-    cout << "┌────────────────────────────────────────────────────────────────────────────┐" << endl
-         << "│                           Danh sách khách hàng                             │" << endl
-         << "├────────┬──────────────────┬─────────────────┬───────────────────┬──────────┤" << endl
-         << "│   ID   │  Tên khách hàng  │  Số điện thoại  │       Email       │ Đóng góp │" << endl
-         << "├────────┼──────────────────┼─────────────────┼───────────────────┼──────────┤" << endl;
+
+    int maxLengthName = 0;
+    int maxLengthSdt = 0;
+    int maxLengthEmail = 0;
+    int maxLengthContribute = 0;
+    int count = 0;
 
     while (getObjectFromFile(file, customer))
     {
-        cout << "│ " << setw(7) << left << customer.getId() << "│ ";
-        cout << setw(17) << left << customer.getName() << "│ ";
-        cout << setw(16) << left << customer.getSdt() << "│ ";
-        cout << setw(18) << left << customer.getEmail() << "│ ";
-        cout << setw(9) << left << customer.getContribute() << "│" << endl;
+        if (customer.getName().length() > maxLengthName)
+        {
+            maxLengthName = customer.getName().length();
+        }
+        if (customer.getSdt().length() > maxLengthSdt)
+        {
+            maxLengthSdt = customer.getSdt().length();
+        }
+        if (customer.getEmail().length() > maxLengthEmail)
+        {
+            maxLengthEmail = customer.getEmail().length();
+        }
+        if (customer.getContribute().length() > maxLengthContribute)
+        {
+            maxLengthContribute = customer.getContribute().length();
+        }
+        count++;
     }
-    cout << "└────────┴──────────────────┴─────────────────┴───────────────────┴──────────┘" << endl;
+
     file.close();
+
+    if (maxLengthName < 6)
+    {
+        maxLengthName = 6;
+    }
+    if (maxLengthSdt < 3)
+    {
+        maxLengthSdt = 3;
+    }
+    if (maxLengthEmail < 5)
+    {
+        maxLengthEmail = 5;
+    }
+    if (maxLengthContribute < 8)
+    {
+        maxLengthContribute = 8;
+    }
+
+    int max = maxLengthName + maxLengthSdt + maxLengthEmail + maxLengthContribute + 20;
+
+    Gotoxy(0, 0);
+    cout << "╔";
+    for (int i = 0; i < max - 2; i++)
+        cout << "═";
+    cout << "╗" << endl;
+    cout << "║";
+    for (int i = 0; i < max - 2; i++)
+        cout << " ";
+    cout << "║" << endl;
+    cout << "╠══════╦";
+    for (int i = 0; i < maxLengthName + 2; i++)
+        cout << "═";
+    cout << "╦";
+    for (int i = 0; i < maxLengthSdt + 2; i++)
+        cout << "═";
+    cout << "╦";
+    for (int i = 0; i < maxLengthEmail + 2; i++)
+        cout << "═";
+    cout << "╦";
+    for (int i = 0; i < maxLengthContribute + 2; i++)
+        cout << "═";
+    cout << "╣" << endl;
+    cout << "║  STT ║";
+    for (int i = 0; i < maxLengthName + 2; i++)
+        cout << " ";
+    cout << "║";
+    for (int i = 0; i < maxLengthSdt + 2; i++)
+        cout << " ";
+    cout << "║";
+    for (int i = 0; i < maxLengthEmail + 2; i++)
+        cout << " ";
+    cout << "║";
+    for (int i = 0; i < maxLengthContribute + 2; i++)
+        cout << " ";
+    cout << "║" << endl;
+    cout << "╠══════╬";
+    for (int i = 0; i < maxLengthName + 2; i++)
+        cout << "═";
+    cout << "╬";
+    for (int i = 0; i < maxLengthSdt + 2; i++)
+        cout << "═";
+    cout << "╬";
+    for (int i = 0; i < maxLengthEmail + 2; i++)
+        cout << "═";
+    cout << "╬";
+    for (int i = 0; i < maxLengthContribute + 2; i++)
+        cout << "═";
+    cout << "╣" << endl;
+    for (int i = 0; i < count; i++)
+    {
+        cout << "║      ║";
+        for (int i = 0; i < maxLengthName + 2; i++)
+            cout << " ";
+        cout << "║";
+        for (int i = 0; i < maxLengthSdt + 2; i++)
+            cout << " ";
+        cout << "║";
+        for (int i = 0; i < maxLengthEmail + 2; i++)
+            cout << " ";
+        cout << "║";
+        for (int i = 0; i < maxLengthContribute + 2; i++)
+            cout << " ";
+        cout << "║" << endl;
+    }
+    cout << "╚══════╩";
+    for (int i = 0; i < maxLengthName + 2; i++)
+        cout << "═";
+    cout << "╩";
+    for (int i = 0; i < maxLengthSdt + 2; i++)
+        cout << "═";
+    cout << "╩";
+    for (int i = 0; i < maxLengthEmail + 2; i++)
+        cout << "═";
+    cout << "╩";
+    for (int i = 0; i < maxLengthContribute + 2; i++)
+        cout << "═";
+    cout << "╝" << endl;
+    Gotoxy((max - 20 + 1) / 2, 1);
+    cout << "Danh sách khách hàng";
+    Gotoxy((7 * 2 + maxLengthName + 3 - 6 + 1) / 2, 3);
+    cout << "Họ tên";
+    Gotoxy((7 * 2 + maxLengthName * 2 + maxLengthSdt + 3 * 3 - 3 + 1) / 2, 3);
+    cout << "Sđt";
+    Gotoxy((7 * 2 + maxLengthName * 2 + maxLengthSdt * 2 + maxLengthEmail + 3 * 5 - 5 + 1) / 2, 3);
+    cout << "Email";
+    Gotoxy((7 * 2 + maxLengthName * 2 + maxLengthSdt * 2 + maxLengthEmail * 2 + maxLengthContribute + 3 * 7 - 8 + 1) / 2, 3);
+    cout << "Đóng góp";
+
+    fstream file1("./customer/listCustomer.txt", ios::in);
+
+    int y = 5;
+    while (getObjectFromFile(file1, customer))
+    {
+        Gotoxy(2, y);
+        cout << customer.getId();
+        Gotoxy(7 + 2, y);
+        cout << customer.getName();
+        Gotoxy(7 + 3 + maxLengthName + 2, y);
+        cout << customer.getSdt();
+        Gotoxy(7 + 3 * 2 + maxLengthName + maxLengthSdt + 2, y);
+        cout << customer.getEmail();
+        Gotoxy(7 + 3 * 3 + maxLengthName + maxLengthSdt + maxLengthEmail + 2, y);
+        cout << customer.getContribute();
+        y++;
+    }
+
+    file1.close();
+    Gotoxy(0, y + 1);
+    pressEnter();
 }
 
 void Admin::addComputer(Computer computer)
@@ -379,33 +862,34 @@ void Admin::addComputer(Computer computer)
     fstream file("./computer/listComputer.txt", ios::app);
     if (file.is_open())
     { // id|name|cost|status|type|totaltime
-        file << computer.getName() << "|" << computer.getCost() << "|" << computer.getStatus() << "|" << computer.getType() << "|" << computer.getTotaltime() << endl;
+        file << computer.getId() << "|" << computer.getCost() << "|" << computer.getStatus() << "|" << computer.getType() << "|" << computer.getTotaltime() << endl;
         file.close();
     }
     else
     {
         cout << "Không thể mở file" << endl;
     }
-    cout << "Thêm máy thành công với ID là: " << computer.getName() << endl;
 }
 
-void Admin::seenComputer(Computer computer)
-{
-    cout << "ID: " << computer.getName() << endl;
-    cout << "Giá: " << computer.getCost() << endl;
-    cout << "Trạng thái: " << computer.getStatus() << endl;
-    cout << "Loại: " << computer.getType() << endl;
-    cout << "Thời gian sử dụng: " << computer.getTotaltime() << endl;
-}
-
-void Admin::changeCost(Computer computer)
+void Admin::changeCost(Computer &computer)
 {
     string cost;
-    cout << "Nhập giá mới: ";
-    cin >> cost;
+    ClearLine(54, 3, computer.getCost().length());
+
+    Gotoxy(54, 3);
+    ShowCursor(true);
+
+    EnterNumber(cost, 6, 4);
+
+    ShowCursor(false);
     computer.setCost(cost);
+    Sleep(200);
+    Gotoxy(40, 8);
+    cout << "Đổi giá thành công";
+    Sleep(700);
+    ClearLine(40, 8, 18);
     updateComputerToFile(computer);
-    cout << "Đổi giá thành công" << endl;
+    checkIdObject(computer);
 }
 
 void Admin::deleteComputer(Computer computer)
@@ -426,13 +910,13 @@ void Admin::deleteComputer(Computer computer)
     Computer tempComputer;
     while (getObjectFromFile(file, tempComputer))
     {
-        if (tempComputer.getName() != computer.getName())
+        if (tempComputer.getId() != computer.getId())
         {
-            temp << tempComputer.getName() << "|" << tempComputer.getCost() << "|" << tempComputer.getStatus() << "|" << tempComputer.getType() << "|" << tempComputer.getTotaltime() << endl;
+            temp << tempComputer.getId() << "|" << tempComputer.getCost() << "|" << tempComputer.getStatus() << "|" << tempComputer.getType() << "|" << tempComputer.getTotaltime() << endl;
         }
         else
         {
-            string temp = tempComputer.getName();
+            string temp = tempComputer.getId();
             string numberPart = temp.substr(2);
             size_t pos = numberPart.find_first_not_of('0');
             temp = (pos != string::npos) ? numberPart.substr(pos) : "0";
@@ -451,29 +935,172 @@ void Admin::deleteComputer(Computer computer)
     temp.close();
     system("del .\\computer\\listComputer.txt");
     system("ren .\\computer\\temp.txt listComputer.txt");
-
-    cout << "Xóa máy thành công" << endl;
 }
 
 void Admin::seenListComputer()
 {
-    cout << "┌─────────────────────────────────────────────────────────────────┐" << endl
-         << "│                      Danh sách máy tính                         │" << endl
-         << "├────────┬──────────┬────────────┬────────────┬───────────────────┤" << endl
-         << "│   ID   |   Giá    | Trạng thái |    Loại    | Thời gian sử dụng |" << endl
-         << "├────────┼──────────┼────────────┼────────────┼───────────────────┤" << endl;
+    system("cls");
     Computer computer;
     fstream file("./computer/listComputer.txt", ios::in);
+
+    int maxLengthCost = 0;
+    int maxLengthStatus = 0;
+    int maxLengthType = 0;
+    int maxLengthTotaltime = 0;
+    int count = 0;
+
     while (getObjectFromFile(file, computer))
     {
-        cout << "│ " << setw(7) << left << computer.getName() << "| ";
-        cout << setw(9) << left << computer.getCost() << "| ";
-        cout << setw(11) << left << computer.getStatus() << "| ";
-        cout << setw(11) << left << computer.getType() << "| ";
-        cout << setw(18) << left << computer.getTotaltime() << "|" << endl;
+        if (computer.getCost().length() > maxLengthCost)
+        {
+            maxLengthCost = computer.getCost().length();
+        }
+        if (computer.getStatus().length() > maxLengthStatus)
+        {
+            maxLengthStatus = computer.getStatus().length();
+        }
+        if (computer.getType().length() > maxLengthType)
+        {
+            maxLengthType = computer.getType().length();
+        }
+        if (computer.getTotaltime().length() > maxLengthTotaltime)
+        {
+            maxLengthTotaltime = computer.getTotaltime().length();
+        }
+        count++;
     }
-    cout << "└────────┴──────────┴────────────┴────────────┴───────────────────┘" << endl;
+
     file.close();
+
+    if (maxLengthCost < 3)
+    {
+        maxLengthCost = 3;
+    }
+    if (maxLengthStatus < 10)
+    {
+        maxLengthStatus = 10;
+    }
+    if (maxLengthType < 4)
+    {
+        maxLengthType = 4;
+    }
+    if (maxLengthTotaltime < 17)
+    {
+        maxLengthTotaltime = 17;
+    }
+
+    int max = maxLengthCost + maxLengthStatus + maxLengthType + maxLengthTotaltime + 20;
+
+    Gotoxy(0, 0);
+    cout << "╔";
+    for (int i = 0; i < max - 2; i++)
+        cout << "═";
+    cout << "╗" << endl;
+    cout << "║";
+    for (int i = 0; i < max - 2; i++)
+        cout << " ";
+    cout << "║" << endl;
+    cout << "╠══════╦";
+    for (int i = 0; i < maxLengthCost + 2; i++)
+        cout << "═";
+    cout << "╦";
+    for (int i = 0; i < maxLengthStatus + 2; i++)
+        cout << "═";
+    cout << "╦";
+    for (int i = 0; i < maxLengthType + 2; i++)
+        cout << "═";
+    cout << "╦";
+    for (int i = 0; i < maxLengthTotaltime + 2; i++)
+        cout << "═";
+    cout << "╣" << endl;
+    cout << "║  STT ║";
+    for (int i = 0; i < maxLengthCost + 2; i++)
+        cout << " ";
+    cout << "║";
+    for (int i = 0; i < maxLengthStatus + 2; i++)
+        cout << " ";
+    cout << "║";
+    for (int i = 0; i < maxLengthType + 2; i++)
+        cout << " ";
+    cout << "║";
+    for (int i = 0; i < maxLengthTotaltime + 2; i++)
+        cout << " ";
+    cout << "║" << endl;
+    cout << "╠══════╬";
+    for (int i = 0; i < maxLengthCost + 2; i++)
+        cout << "═";
+    cout << "╬";
+    for (int i = 0; i < maxLengthStatus + 2; i++)
+        cout << "═";
+    cout << "╬";
+    for (int i = 0; i < maxLengthType + 2; i++)
+        cout << "═";
+    cout << "╬";
+    for (int i = 0; i < maxLengthTotaltime + 2; i++)
+        cout << "═";
+    cout << "╣" << endl;
+    for (int i = 0; i < count; i++)
+    {
+        cout << "║      ║";
+        for (int i = 0; i < maxLengthCost + 2; i++)
+            cout << " ";
+        cout << "║";
+        for (int i = 0; i < maxLengthStatus + 2; i++)
+            cout << " ";
+        cout << "║";
+        for (int i = 0; i < maxLengthType + 2; i++)
+            cout << " ";
+        cout << "║";
+        for (int i = 0; i < maxLengthTotaltime + 2; i++)
+            cout << " ";
+        cout << "║" << endl;
+    }
+    cout << "╚══════╩";
+    for (int i = 0; i < maxLengthCost + 2; i++)
+        cout << "═";
+    cout << "╩";
+    for (int i = 0; i < maxLengthStatus + 2; i++)
+        cout << "═";
+    cout << "╩";
+    for (int i = 0; i < maxLengthType + 2; i++)
+        cout << "═";
+    cout << "╩";
+    for (int i = 0; i < maxLengthTotaltime + 2; i++)
+        cout << "═";
+    cout << "╝" << endl;
+
+    Gotoxy((max - 18 + 1) / 2, 1);
+    cout << "Danh sách máy tính";
+    Gotoxy((7 * 2 + maxLengthCost + 3 - 3 + 1) / 2, 3);
+    cout << "Giá";
+    Gotoxy((7 * 2 + maxLengthCost * 2 + maxLengthStatus + 3 * 3 - 10 + 1) / 2, 3);
+    cout << "Trạng thái";
+    Gotoxy((7 * 2 + maxLengthCost * 2 + maxLengthStatus * 2 + maxLengthType + 3 * 5 - 4 + 1) / 2, 3);
+    cout << "Loại";
+    Gotoxy((7 * 2 + maxLengthCost * 2 + maxLengthStatus * 2 + maxLengthType * 2 + maxLengthTotaltime + 3 * 7 - 17 + 1) / 2, 3);
+    cout << "Thời gian sử dụng";
+
+    fstream file1("./computer/listComputer.txt", ios::in);
+
+    int y = 5;
+    while (getObjectFromFile(file1, computer))
+    {
+        Gotoxy(2, y);
+        cout << computer.getId();
+        Gotoxy(7 + 2, y);
+        cout << computer.getCost();
+        Gotoxy(7 + 3 + maxLengthCost + 2, y);
+        cout << computer.getStatus();
+        Gotoxy(7 + 3 * 2 + maxLengthCost + maxLengthStatus + 2, y);
+        cout << computer.getType();
+        Gotoxy(7 + 3 * 3 + maxLengthCost + maxLengthStatus + maxLengthType + 2, y);
+        cout << computer.getTotaltime();
+        y++;
+    }
+
+    file1.close();
+    Gotoxy(0, y + 1);
+    pressEnter();
 }
 
 /*------------------------------------Other------------------------------------*/

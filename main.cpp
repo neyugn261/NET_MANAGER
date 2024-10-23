@@ -8,30 +8,31 @@ int main()
     if (account.login())
     {
         if (account.getStatus() == "ONLINE")
-        {               
+        {
+            system("cls");
             cout << "Tài khoản đã đăng nhập ở một nơi khác" << endl;
+            pressEnter();
             return 0;
         }
         else
         {
-            account.setStatus("ONLINE");
-
             if (account.getRole() == "ADMIN")
             {
                 Admin admin;
                 admin.setPass(account.getPass());
-                admin.setStatus(account.getStatus());
-                admin.setName(account.getAname());
+                admin.setStatus("ONLINE");
+                admin.setAname(account.getAname());
                 admin.setRole(account.getRole());
+                updateAdminToFile(admin);
                 menuAdmin(admin);
             }
             else
             {
-                Staff staff;
-                staff.setPass(account.getPass());
-                staff.setStatus(account.getStatus());
-                staff.setName(account.getAname());
-                staff.setRole(account.getRole());
+                Staff staff;                  
+                staff.setAname(account.getAname());
+                checkAnameStaff(staff);
+                staff.setStatus("ONLINE");
+                updateStaffToFile(staff);
                 menuStaff(staff);
             }
         }

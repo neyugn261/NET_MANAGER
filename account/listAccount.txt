@@ -1,5 +1,2 @@
 admin|123|ADMIN|OFFLINE
-quocnguyen|123|STAFF|OFFLINE
-dangkhoa|123|STAFF|OFFLINE
-nguyenquocnguyen|123|STAFF|OFFLINE
- d| d|STAFF|OFFLINE
+qn123|1234|staff|OFFLINE

@@ -35,6 +35,6 @@ public:
 bool checkAccount(Account &account);
 istream &operator>>(istream &in, Account &account);
 /*------------------------------------Other------------------------------------*/
-void enterpassword(string &password);
+void enterpassword(string &password, int n);
 
 #endif

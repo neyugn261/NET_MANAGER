@@ -16,12 +16,19 @@ void Customer::setContribute(string contribute) { this->contribute = contribute;
 /*------------------------------------Friend------------------------------------*/
 
 bool operator>>(istream &in, Customer &customer)
-{
-    cout << "Nhập tên khách hàng: ";
-    in >> customer.name;
-    if (checkObject(customer))
+{   
+    ClearLine(42, 3, 30);
+    Gotoxy(42,3);
+    EnterString(customer.name, 25);
+    toName(customer.name);
+    if (checkNameObject(customer))
     {
-        cout << "Khách hàng đã tồn tại!" << endl;
+        Sleep(200);
+        ShowCursor(false);
+        Gotoxy(26, 7);
+        cout << "Khách hàng đã tồn tại" << endl;
+        Sleep(700);
+        ClearLine(26, 7, 20);
         return false;
     }
     else
@@ -37,13 +44,17 @@ bool operator>>(istream &in, Customer &customer)
         ss << setw(3) << setfill('0') << id;
         customer.id = "C" + ss.str();
 
-        cout << "Nhập số điện thoại: ";
-        in >> customer.sdt;
-        cout << "Nhập email: ";
-        in >> customer.email;
+        ClearLine(46, 4, 10);
+        Gotoxy(46, 4);
+        EnterNumber(customer.sdt, 10,10);
+        ClearLine(38, 5, 35);
+        Gotoxy(38, 5);
+        EnterString(customer.email, 35);
         customer.contribute = "0";
     }
     return true;
 }
+    
+
 
 /*------------------------------------Other------------------------------------*/

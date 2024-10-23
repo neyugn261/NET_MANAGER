@@ -1,5 +1,2 @@
-D001|pepsi|12000|lon|12000
-D003|mitom|12000|bat|100
-D006|7up|10000|lon|10
-D004|siting|10000|lon|12
-D002|theoleo|6000|goi|20
+D012|Pepsi|10000|lon|21
+D010|Socola|12000|thanh|1

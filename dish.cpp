@@ -20,24 +20,19 @@ void Dish::setResidual(string residual) { this->residual = residual; }
 // └──────────────────────────────┘
 /*------------------------------------Friend------------------------------------*/
 bool operator>>(istream &in, Dish &dish)
-{
-    cout << "╔═══════════════════════════════════╗" << endl
-         << "║          Thêm thực phẩm           ║" << endl
-         << "╠═══════════════════════════════════╣───────────────────────┐" << endl  
-         << "║ 1.Nhập tên món ăn:                ║ Tên: mitom,pepsi...   │" << endl
-         << "║ 2.Nhập giá: 10000  (VND)          ║ Giá: 10000,1200...    │" << endl
-         << "║ 3.Nhập đơn vị:                    ║ Đơn vị: lon,to,chai...│" << endl
-         << "║ 4.Nhập số lượng:                  ║ Số lưong: 50,100...   │" << endl
-         << "╚;══════════════════════════════════╝───────────────────────┘" << endl;
-    Gotoxy((35 - 14) / 2, 1);
-    cout << "Thêm thực phẩm";
-
-    Gotoxy(21, 3);
-    in >> dish.name;
-    if (checkObject(dish))
-    {
-        Gotoxy(0, 8);
+{     
+    ClearLine(50, 3, 20);
+    Gotoxy(50, 3);    
+    EnterString(dish.name, 20);
+    toName(dish.name);
+    if (checkNameObject(dish))
+    {   
+        Sleep(200);
+        ShowCursor(false);
+        Gotoxy(26, 8);               
         cout << "Thực phẩm đã tồn tại" << endl;
+        Sleep(700);
+        ClearLine(26, 8, 20);        
         return false;
     }
     else
@@ -53,12 +48,15 @@ bool operator>>(istream &in, Dish &dish)
         ss << setw(3) << setfill('0') << id;
         dish.id = "D" + ss.str();
 
-        Gotoxy(14, 4);
-        in >> dish.price;
-        Gotoxy(17, 5);
-        in >> dish.unit;
-        Gotoxy(19, 6);
-        in >> dish.residual;
+        ClearLine(40, 4, 7);
+        Gotoxy(40, 4);
+        EnterNumber(dish.price, 7,4);
+        ClearLine(43, 5, 5);
+        Gotoxy(43, 5);        
+        EnterString(dish.unit, 5);
+        ClearLine(45, 6, 5);
+        Gotoxy(45, 6);
+        EnterNumber(dish.residual, 5);
     }
     return true;
 }

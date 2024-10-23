@@ -1,1 +1,5 @@
-C002|aaa|123|asd|0
+C003|Nguyen Quoc Nguyen|0935462509|quocnguyen1911112@gmail.com|0
+C002|Dang Dang Khoa|0906457124|khoadn1109@gmail.com|0
+C001|Nguyen Thi Kieu Vi|1123341234|a@gmail.com|0
+C005|Quoc Nguyen|0935462509|quocnguyen191112@gmail.com|0
+C004|A B C|1232431243|1412341|0

@@ -7,7 +7,7 @@ using namespace std;
 class Computer
 {
 private:
-    string name;
+    string id;
     string cost;
     string status;
     string type;
@@ -15,13 +15,13 @@ private:
 
 public:
     ~Computer();
-    string getName();
+    string getId();
     string getCost();
     string getStatus();
     string getType();
     string getTotaltime();
 
-    void setName(string);
+    void setId(string);
     void setCost(string);
     void setStatus(string);
     void setType(string);
