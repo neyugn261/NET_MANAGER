@@ -482,7 +482,7 @@ void optionMenu(string typeMenu, int option)
             break;
         }
     }
-    else if (typeMenu =="SORTDISH")
+    else if (typeMenu == "SORTDISH")
     {
         switch (option)
         {
@@ -577,14 +577,14 @@ void menuMain(int n, int x, int y)
     Gotoxy(x, y + 1);
     cout << "║                              ║";
     Gotoxy(x, y + 2);
-    cout << "╠══════════════════════════════╣";   
+    cout << "╠══════════════════════════════╣";
     for (int i = 0; i < n; i++)
-    {   
+    {
         Gotoxy(x, y + 3 + i);
-        cout << "║                              ║" ;
+        cout << "║                              ║";
     }
     Gotoxy(x, y + 3 + n);
-    cout << "╚══════════════════════════════╝" ;
+    cout << "╚══════════════════════════════╝";
 }
 
 void menuAdd(int x, int y)
@@ -2290,36 +2290,50 @@ bool checkAnameStaff(Staff &staff)
     return false;
 }
 
-bool compareByDishAsc(Dish object1, Dish object2, string type)
+bool compareByDishAsc(Dish &object1, Dish &object2, string type)
 {
 
     if (type == "PRICE")
     {
-        return object1.getPrice() < object2.getPrice();
+        int price1 = stoi(object1.getPrice());
+        int price2 = stoi(object2.getPrice());
+        return price1 < price2;
     }
     else if (type == "RESIDUAL")
     {
-        return object1.getResidual() < object2.getResidual();
+        int residual1 = stoi(object1.getResidual());
+        int residual2 = stoi(object2.getResidual());
+        return residual1 < residual2;
     }
     else
     {
-        return object1.getId() < object2.getId();
+        int id1 = stoi(object1.getId().substr(1));
+        int id2 = stoi(object2.getId().substr(1));
+        return id1 < id2;
     }
+    return false;
 }
-bool compareByDishDesc(Dish object1, Dish object2, string type)
+bool compareByDishDesc(Dish &object1, Dish &object2, string type)
 {
     if (type == "PRICE")
     {
-        return object1.getPrice() > object2.getPrice();
+        int price1 = stoi(object1.getPrice());
+        int price2 = stoi(object2.getPrice());
+        return price1 > price2;
     }
     else if (type == "RESIDUAL")
     {
-        return object1.getResidual() > object2.getResidual();
+        int residual1 = stoi(object1.getResidual());
+        int residual2 = stoi(object2.getResidual());
+        return residual1 > residual2;
     }
     else
     {
-        return object1.getId() > object2.getId();
+        int id1 = stoi(object1.getId().substr(1));
+        int id2 = stoi(object2.getId().substr(1));
+        return id1 > id2;
     }
+    return false;
 }
 
 void swapDish(Dish &a, Dish &b)
@@ -2329,31 +2343,34 @@ void swapDish(Dish &a, Dish &b)
     b = temp;
 }
 
-void quickSortDish(vector<Dish> &list, int left, int right, bool (*compare)(Dish , Dish , string), string type)
+void quickSortDish(vector<Dish> &list, int left, int right, bool (*compare)(Dish &, Dish &, string), string type)
 {
     if (left < right)
     {
-        srand(time(NULL));
-        int pivot = left + rand() % (right - left + 1);
-        int i = left - 1;
-        int j = right + 1;
-        while (true)
+        srand(time(NULL)); // Gọi srand một lần duy nhất trong chương trình chính
+        int pivotIndex = left + rand() % (right - left + 1);
+        Dish pivot = list[pivotIndex]; // Lưu giá trị của pivot
+
+        int i = left;
+        int j = right;
+
+        while (i <= j)
         {
-            do
-            {
+            while (compare(list[i], pivot, type))
                 i++;
-            } while (compare(list[i], list[pivot], type));
-            do
-            {
+            while (compare(pivot, list[j], type))
                 j--;
-            } while (compare(list[pivot], list[j], type));
-            if (i >= j)
-                break;
-            swapDish(list[i], list[j]);
+            if (i <= j)
+            {
+                swapDish(list[i], list[j]);
+                i++;
+                j--;
+            }
         }
-        quickSortDish(list, left, j, compare, type);
-        quickSortDish(list, j + 1, right, compare, type);
+
+        if (left < j)
+            quickSortDish(list, left, j, compare, type);
+        if (i < right)
+            quickSortDish(list, i, right, compare, type);
     }
 }
-
-

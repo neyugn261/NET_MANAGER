@@ -508,7 +508,6 @@ void Admin::seenListDish()
 
     int max = maxLengthName + maxLengthPrice + maxLengthUnit + maxLengthResidual + 20;
 
-   
     Gotoxy(0, 0);
     cout << "╔";
     for (int i = 0; i < max - 2; i++)
@@ -633,19 +632,18 @@ void Admin::seenListDish()
                 sortDishId(listDish, max + 36);
                 break;
             case 2:
-               // sortDishCost(listDish);
+                sortDishPrice(listDish,max + 36);
                 break;
             case 3:
-               // sortDishQuanlity(listDish);
+                sortDishResidual(listDish, max + 36);
                 break;
             case 4:
+                system("cls");
                 return;
             }
         }
         writeListDish(listDish, maxLengthName, maxLengthPrice, maxLengthUnit, maxLengthResidual);
     }
-
-    
 }
 
 void sortDishId(vector<Dish> &listDish, int x)
@@ -679,8 +677,84 @@ void sortDishId(vector<Dish> &listDish, int x)
                 ClearLine(x, 2, 16);
                 ClearLine(x, 3, 16);
                 ClearLine(x, 4, 16);
-                ClearLine(x, 5, 16);                
-                return;            
+                ClearLine(x, 5, 16);
+                return;
+            }
+        }
+    }
+}
+
+void sortDishPrice(vector<Dish> &listDish, int x)
+{
+    menuSelectTypeSort(x, 2);
+    int selectOption = 1;
+    while (true)
+    {
+        showMenu("TYPESORT", selectOption, x + 4, 3);
+        int key = _getch();
+        switch (key)
+        {
+        case KEY_UP:
+            selectOption = (selectOption == 1) ? getMenuOptionCount("TYPESORT") : selectOption - 1;
+            break;
+        case KEY_DOWN:
+            selectOption = (selectOption == getMenuOptionCount("TYPESORT")) ? 1 : selectOption + 1;
+            break;
+        case KEY_ENTER:
+            switch (selectOption)
+            {
+            case 1:
+                quickSortDish(listDish, 0, listDish.size() - 1, compareByDishAsc, "PRICE");
+                ClearLine(x, 2, 16);
+                ClearLine(x, 3, 16);
+                ClearLine(x, 4, 16);
+                ClearLine(x, 5, 16);
+                return;
+            case 2:
+                quickSortDish(listDish, 0, listDish.size() - 1, compareByDishDesc, "PRICE");
+                ClearLine(x, 2, 16);
+                ClearLine(x, 3, 16);
+                ClearLine(x, 4, 16);
+                ClearLine(x, 5, 16);
+                return;
+            }
+        }
+    }
+}
+
+void sortDishResidual(vector<Dish> &listDish, int x)
+{
+    menuSelectTypeSort(x, 2);
+    int selectOption = 1;
+    while (true)
+    {
+        showMenu("TYPESORT", selectOption, x + 4, 3);
+        int key = _getch();
+        switch (key)
+        {
+        case KEY_UP:
+            selectOption = (selectOption == 1) ? getMenuOptionCount("TYPESORT") : selectOption - 1;
+            break;
+        case KEY_DOWN:
+            selectOption = (selectOption == getMenuOptionCount("TYPESORT")) ? 1 : selectOption + 1;
+            break;
+        case KEY_ENTER:
+            switch (selectOption)
+            {
+            case 1:
+                quickSortDish(listDish, 0, listDish.size() - 1, compareByDishAsc, "RESIDUAL");
+                ClearLine(x, 2, 16);
+                ClearLine(x, 3, 16);
+                ClearLine(x, 4, 16);
+                ClearLine(x, 5, 16);
+                return;
+            case 2:
+                quickSortDish(listDish, 0, listDish.size() - 1, compareByDishDesc, "RESIDUAL");
+                ClearLine(x, 2, 16);
+                ClearLine(x, 3, 16);
+                ClearLine(x, 4, 16);
+                ClearLine(x, 5, 16);
+                return;
             }
         }
     }
@@ -690,7 +764,7 @@ void writeListDish(vector<Dish> &listDish, int maxLengthName, int maxLengthPrice
 {
     int y = 5;
     for (auto &dish : listDish)
-    {   
+    {
         ClearLine(2, y, 4);
         Gotoxy(2, y);
         cout << dish.getId();

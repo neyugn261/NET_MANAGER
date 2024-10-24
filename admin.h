@@ -32,4 +32,6 @@ public:
 /*------------------------------------Other------------------------------------*/
 void writeListDish(vector<Dish>& listDish, int maxLengthName, int maxLengthPrice, int maxLengthUnit, int maxLengthResidual);
 void sortDishId(vector<Dish>& listDish, int x);
+void sortDishPrice(vector<Dish> &listDish, int x);
+void sortDishResidual(vector<Dish> &listDish, int x);
 #endif

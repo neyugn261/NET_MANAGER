@@ -124,9 +124,14 @@ bool checkAname(string aname);
 bool checkAnameStaff(Staff &staff);
 
 
-bool compareByDishAsc(Dish object1, Dish object2, string type);
-bool compareByDishDesc(Dish object1, Dish object2, string type);
+bool compareByDishAsc(Dish &object1, Dish& object2, string type);
+bool compareByDishDesc(Dish &object1, Dish &object2, string type);
 void swapDish(Dish &object1, Dish &object2);
-void quickSortDish(vector<Dish> &list, int left, int right, bool (*compare)(Dish , Dish , string), string type);
+void quickSortDish(vector<Dish> &list, int left, int right, bool (*compare)(Dish& , Dish& , string), string type);
+
+bool compareByComputerAsc(Computer &object1, Computer &object2, string type);
+bool compareByComputerDesc(Computer &object1, Computer &object2, string type);
+void swapComputer(Computer &object1, Computer &object2);
+void quickSortComputer(vector<Computer> &list, int left, int right, bool (*compare)(Computer& , Computer& , string), string type);
 
 #endif
